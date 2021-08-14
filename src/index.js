@@ -1,19 +1,21 @@
 #!/usr/bin/env node
-import path from "path";
-import inquirer from "inquirer";
-import { writeFile } from "fs/promises";
-import fs from "fs";
+const path = require("path");
+const inquirer = require("inquirer");
+const { writeFile, readFile } = require("fs/promises");
+const fs = require("fs");
+const helperFunction = require("./constants.js");
+const { exec } = require("child_process");
+const { objJS, objTS } = require("./utils/index.js");
+const chalk = require("chalk");
 
-import helperFunction from "./constants";
-import { objJS, objTS } from "./test";
 helperFunction.prompt();
 const cwd = process.cwd();
 const base_name = path.basename(cwd); // node
 
 const main = async () => {
-  const baseDir: string = "src";
-  let fileName: string = "";
-  let packageObject: typeof objTS | typeof objJS;
+  const baseDir = "src";
+  let fileName = "";
+  let packageObject = {};
   const { language } = await inquirer.prompt([
     {
       choices: ["JavaScript", "TypeScript"],
@@ -72,6 +74,14 @@ const main = async () => {
       language[0] === "JavaScript" ? `${entryPoint}.js` : `${entryPoint}.ts`;
   }
   packageObject.main = fileName;
+
+  if (fileName.split(".")[1] === "js") {
+    packageObject.scripts.start = `node src/${fileName}`;
+    packageObject.scripts.dev = `nodemon src/${fileName}`;
+  } else {
+    packageObject.scripts.start = `ts-node src/${fileName}`;
+    packageObject.scripts.dev = `nodemon src/${fileName}`;
+  }
   const { keywords } = await inquirer.prompt([
     {
       name: "keywords",
@@ -100,13 +110,11 @@ const main = async () => {
   }
 
   await writeFile(
-    path.resolve(path.join(baseDir, fileName)),
-    fileName.split(".")[1] === "ts"
+    path.resolve(path.join(__dirname, baseDir, fileName)),
+    fileName.split(".")[1].toLocaleLowerCase() === "ts"
       ? `const message:string = "hello world!";\nconsole.log(message)`
       : `const message = "hello world!";\nconsole.log(message)`
   );
-
-  // await writeFile(path.join(__dirname, 'package.json', JSON.stringify(JSON.parse(config), null, 2)))
   await writeFile(
     path.join(__dirname, "package.json"),
     JSON.stringify(packageObject, null, 2)
@@ -116,8 +124,34 @@ const main = async () => {
     `# node modules\nnode_modules\n\n# .env\n.env\n\n`
   );
   await writeFile(path.join(__dirname, "README.md"), `## Node Backend`);
+
+  let config = "";
+  if (fileName.split(".")[1].toLocaleLowerCase() === "ts") {
+    helperFunction.sep();
+    console.log(
+      chalk.bgGreen(
+        "we have detected that you are using typescript therefore we are generating tsconfig.json for you.."
+      )
+    );
+    helperFunction.sep();
+    const tsconfigPath = path.resolve(
+      path.join(__dirname, "/configs/tsconfig.json")
+    );
+    config = await readFile(tsconfigPath, "utf8");
+    await writeFile(
+      path.join(__dirname, "tsconfig.json"),
+      JSON.stringify(JSON.parse(config), null, 2)
+    );
+  }
 };
+
+helperFunction.sep();
 
 main()
   .catch((error) => console.error(error))
-  .finally(() => {});
+  .then(() => {
+    exec("npm install", function (_error, _stdout, _stderr) {});
+  })
+  .finally(() => {
+    helperFunction.message();
+  });

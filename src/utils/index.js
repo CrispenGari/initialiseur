@@ -6,9 +6,8 @@ const objJS = {
   description: "",
   license: "MIT",
   scripts: {
-    watch: "tsc -w",
-    start: "ts-node src/index.ts",
-    dev: "nodemon dist/index.js",
+    start: "node src/server.js",
+    dev: "nodemon src/server.js",
   },
   dependencies: {
     cors: "^2.8.5",
@@ -29,8 +28,8 @@ const objTS = {
   keywords: [],
   scripts: {
     watch: "tsc -w",
-    start: "ts-node src/index.ts",
-    dev: "nodemon dist/index.js",
+    start: "ts-node src/server.ts",
+    dev: "nodemon dist/server.js",
   },
   dependencies: {
     cors: "^2.8.5",
@@ -46,4 +45,4 @@ const objTS = {
   },
 };
 
-export { objJS, objTS };
+module.exports = { objJS, objTS };
