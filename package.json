@@ -28,6 +28,18 @@
     "@types/shelljs": "^0.8.9",
     "nodemon": "^2.0.12"
   },
-  "keywords": [],
-  "repository": "https://github.com/CrispenGari/nodejs-backend.git"
+  "bugs": {
+    "url": "https://github.com/CrispenGari/nodejs-backend/issues"
+  },
+  "homepage": "https://github.com/CrispenGari/nodejs-backend#readme",
+  "keywords": [
+    "node.ts",
+    "node.js",
+    "typescript",
+    "ts",
+    "nodejs-backend",
+    "javascript",
+    "js",
+    "express"
+  ]
 }
