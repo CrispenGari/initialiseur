@@ -1,21 +1,21 @@
 #!/usr/bin/env node
-const path = require("path");
-const inquirer = require("inquirer");
-const { writeFile, readFile } = require("fs/promises");
-const fs = require("fs");
-const helperFunction = require("./constants.js");
-const { exec } = require("child_process");
-const { objJS, objTS } = require("./utils/index.js");
-const chalk = require("chalk");
+import path from "path";
+import inquirer from "inquirer";
+import { writeFile, readFile } from "fs/promises";
+import fs from "fs";
+import helperFunction from "./constants";
+import { exec } from "child_process";
+import { objJS, objTS } from "./utils";
+import chalk from "chalk";
 
 helperFunction.prompt();
 const cwd = process.cwd();
 const base_name = path.basename(cwd); // node
 
 const main = async () => {
-  const baseDir = "src";
-  let fileName = "";
-  let packageObject = {};
+  const baseDir: string = "src";
+  let fileName: string = "";
+  let packageObject: typeof objTS | typeof objJS;
   const { language } = await inquirer.prompt([
     {
       choices: ["JavaScript", "TypeScript"],

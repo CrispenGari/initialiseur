@@ -45,4 +45,4 @@ const objTS = {
   },
 };
 
-module.exports = { objJS, objTS };
+export { objJS, objTS };

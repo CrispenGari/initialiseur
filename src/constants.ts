@@ -1,6 +1,6 @@
-const chalk = require("chalk");
-const fs = require("fs/promises");
-const path = require("path");
+import chalk from "chalk";
+import fs from "fs/promises";
+import path from "path";
 
 const sep = () => {
   console.log();
@@ -21,7 +21,7 @@ const message = () => {
   sep();
 };
 
-const createFolders = async (pathName) => {
+const createFolders = async (pathName: string) => {
   await fs.mkdir(path.resolve(__dirname, pathName));
 };
 const helperFunction = {
@@ -30,4 +30,4 @@ const helperFunction = {
   sep,
   message,
 };
-module.exports = helperFunction;
+export default helperFunction;
