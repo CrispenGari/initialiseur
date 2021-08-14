@@ -1,10 +1,10 @@
 {
   "name": "@crispengari/node-backend",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "main": "src index.js",
   "author": "",
   "license": "MIT",
-  "bin": "src/index.ts",
+  "bin": "src/index.js",
   "description": "THIS IS A BOILER PLATE THAT INITIALIZE A NODE EXPRESS BACKEND FOR TYPESCRIPT AND JAVASCRIPT",
   "scripts": {
     "start": "node src/index.js",
