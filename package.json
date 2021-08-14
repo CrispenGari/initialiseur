@@ -1,9 +1,10 @@
 {
   "name": "nodejs-backend",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "main": "index.js",
   "author": "CrispenGari",
   "license": "MIT",
+  "bin": "src/index.ts",
   "description": "THIS IS A BOILER PLATE THAT INITIALIZE A NODE EXPRESS BACKEND FOR TYPESCRIPT AND JAVASCRIPT",
   "scripts": {
     "watch": "tsc -w",
