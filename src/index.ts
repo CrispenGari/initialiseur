@@ -111,6 +111,11 @@ const main = async () => {
     path.join(__dirname, "package.json"),
     JSON.stringify(packageObject, null, 2)
   );
+  await writeFile(
+    path.join(__dirname, ".gitignore"),
+    `# node modules\nnode_modules\n\n# .env\n.env\n\n`
+  );
+  await writeFile(path.join(__dirname, "README.md"), `## Node Backend`);
 };
 
 main()
