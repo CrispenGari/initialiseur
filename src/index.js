@@ -163,9 +163,6 @@ helperFunction.sep();
 
 main()
   .catch((error) => console.error(error))
-  .then(() => {
-    exec("npm install", function (_error, _stdout, _stderr) {});
-  })
   .finally(() => {
     helperFunction.message();
   });
