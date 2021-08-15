@@ -140,6 +140,7 @@ const main = async () => {
   await writeFile(path.join(__dirname, "README.md"), readMe);
 
   let config = "";
+  console.log("dirname", __dirname);
   if (fileName.split(".")[1].toLocaleLowerCase() === "ts") {
     helperFunction.sep();
     console.log(
