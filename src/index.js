@@ -105,10 +105,8 @@ const main = async () => {
   ]);
   packageObject.license = license;
 
-  if (!fs.existsSync(path.resolve(path.join(__dirname, baseDir)))) {
-    await helperFunction.createFolders(
-      path.resolve(path.join(__dirname, baseDir))
-    );
+  if (!fs.existsSync(path.resolve(cwd, baseDir))) {
+    await helperFunction.createFolders(path.resolve(cwd, baseDir));
   }
 
   const jsCode = await readFile(
@@ -121,11 +119,11 @@ const main = async () => {
   );
 
   await writeFile(
-    path.resolve(path.join(__dirname, baseDir, fileName)),
+    path.resolve(path.resolve(cwd, `${baseDir}/${fileName}`)),
     fileName.split(".")[1].toLocaleLowerCase() === "ts" ? tsCode : jsCode
   );
   await writeFile(
-    path.join(__dirname, "package.json"),
+    path.resolve(cwd, "package.json"),
     JSON.stringify(packageObject, null, 2)
   );
 
@@ -133,14 +131,13 @@ const main = async () => {
   const readMe = await readFile(readMePath, "utf8");
 
   await writeFile(
-    path.join(__dirname, ".gitignore"),
+    path.resolve(cwd, ".gitignore"),
     `# node modules\nnode_modules\n\n# .env\n.env\n\n`
   );
-  await writeFile(path.join(__dirname, ".env"), `# environment variables here`);
-  await writeFile(path.join(__dirname, "README.md"), readMe);
+  await writeFile(path.resolve(cwd, ".env"), `# environment variables here`);
+  await writeFile(path.resolve(cwd, "README.md"), readMe);
 
   let config = "";
-  console.log("dirname", __dirname);
   if (fileName.split(".")[1].toLocaleLowerCase() === "ts") {
     helperFunction.sep();
     console.log(
@@ -154,7 +151,7 @@ const main = async () => {
     );
     config = await readFile(tsconfigPath, "utf8");
     await writeFile(
-      path.join(__dirname, "tsconfig.json"),
+      path.resolve(cwd, "tsconfig.json"),
       JSON.stringify(JSON.parse(config), null, 2)
     );
   }
@@ -164,6 +161,29 @@ helperFunction.sep();
 
 main()
   .catch((error) => console.error(error))
-  .finally(() => {
-    helperFunction.message();
+  .then(async () => {
+    const { packageManager } = await inquirer.prompt([
+      {
+        choices: ["yarn", "npm"],
+        type: "checkbox",
+        default: "yarn",
+        name: "packageManager",
+        message: "which package manager are you using?",
+      },
+    ]);
+
+    const installing = async () => {
+      if (packageManager[0] === "yarn") {
+        await exec("yarn", (_, __, ___) => {});
+      } else {
+        await exec("npm install", (_, __, ___) => {});
+      }
+      helperFunction.sep();
+      console.log(
+        chalk.blue(`--- installing packages using ${packageManager[0]}...`)
+      );
+    };
+    installing().finally(() => {
+      helperFunction.message();
+    });
   });
