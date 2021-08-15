@@ -105,25 +105,39 @@ const main = async () => {
   ]);
   packageObject.license = license;
 
-  if (!fs.existsSync(baseDir)) {
-    await helperFunction.createFolders(baseDir);
+  if (!fs.existsSync(path.resolve(path.join(__dirname, baseDir)))) {
+    await helperFunction.createFolders(
+      path.resolve(path.join(__dirname, baseDir))
+    );
   }
+
+  const jsCode = await readFile(
+    path.resolve(path.join(__dirname, "utils/server.js")),
+    "utf8"
+  );
+  const tsCode = await readFile(
+    path.resolve(path.join(__dirname, "utils/server.ts")),
+    "utf8"
+  );
 
   await writeFile(
     path.resolve(path.join(__dirname, baseDir, fileName)),
-    fileName.split(".")[1].toLocaleLowerCase() === "ts"
-      ? `const message:string = "hello world!";\nconsole.log(message)`
-      : `const message = "hello world!";\nconsole.log(message)`
+    fileName.split(".")[1].toLocaleLowerCase() === "ts" ? tsCode : jsCode
   );
   await writeFile(
     path.join(__dirname, "package.json"),
     JSON.stringify(packageObject, null, 2)
   );
+
+  const readMePath = path.resolve(path.join(__dirname, "utils/readme.md"));
+  const readMe = await readFile(readMePath, "utf8");
+
   await writeFile(
     path.join(__dirname, ".gitignore"),
     `# node modules\nnode_modules\n\n# .env\n.env\n\n`
   );
-  await writeFile(path.join(__dirname, "README.md"), `## Node Backend`);
+  await writeFile(path.join(__dirname, ".env"), `# environment variables here`);
+  await writeFile(path.join(__dirname, "README.md"), readMe);
 
   let config = "";
   if (fileName.split(".")[1].toLocaleLowerCase() === "ts") {
@@ -135,7 +149,7 @@ const main = async () => {
     );
     helperFunction.sep();
     const tsconfigPath = path.resolve(
-      path.join(__dirname, "src/configs/tsconfig.json")
+      path.join(__dirname, "configs/tsconfig.json")
     );
     config = await readFile(tsconfigPath, "utf8");
     await writeFile(
