@@ -2,6 +2,12 @@
 
 This is a simple boiler plate command line tool that will generate a node backend boiler plate with either javascript or typescript express server ready to run.
 
+### Demo
+
+<p align="center">
+<img src=""/>
+</p>
+
 ### Usage
 
 To use this clt it is very easy all you have to do is to run the following command:
