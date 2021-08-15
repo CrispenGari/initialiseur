@@ -171,7 +171,6 @@ main()
         message: "which package manager are you using?",
       },
     ]);
-
     const installing = async () => {
       if (packageManager[0] === "yarn") {
         await exec("yarn", (_, __, ___) => {});
@@ -183,7 +182,7 @@ main()
         chalk.blue(`--- installing packages using ${packageManager[0]}...`)
       );
     };
-    installing().finally(() => {
-      helperFunction.message();
+    installing().then(() => {
+      helperFunction.message(packageManager[0]);
     });
   });

@@ -13,11 +13,11 @@ const prompt = () => {
   sep();
 };
 
-const message = () => {
+const message = (packageManager) => {
   sep();
   console.log(chalk.bgBlue("-- all done!! "));
   sep();
-  console.log(chalk.bgGreen("-- run npm dev "));
+  console.log(chalk.bgGreen(`-- run ${packageManager} dev `));
   sep();
 };
 
