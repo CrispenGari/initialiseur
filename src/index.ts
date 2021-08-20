@@ -1,32 +1,34 @@
-#!/usr/bin/env node
-const path = require("path");
-const inquirer = require("inquirer");
-const { writeFile, readFile } = require("fs/promises");
-const fs = require("fs");
-const helperFunction = require("./constants.js");
-const { exec } = require("child_process");
-const { objJS, objTS } = require("./utils/index.js");
-const chalk = require("chalk");
+#!/usr/bin/env ts-node
+import path from "path";
+import inquirer from "inquirer";
+import { writeFile, readFile } from "fs/promises";
+import fs from "fs";
+import helperFunction from "./constants";
+import { exec } from "child_process";
+import { objJS, objTS } from "./utils";
+import chalk from "chalk";
 
 helperFunction.prompt();
 const cwd = process.cwd();
 const base_name = path.basename(cwd); // node
 
+let selectedLanguage: string = "TypeScript";
+
 const main = async () => {
   const baseDir = "src";
   let fileName = "";
-  let packageObject = {};
+  let packageObject: typeof objJS | typeof objTS;
   const { language } = await inquirer.prompt([
     {
       choices: ["JavaScript", "TypeScript"],
-      type: "checkbox",
+      type: "list",
       default: "TypeScript",
       name: "language",
       message: "which language do you want to use for your backend app?",
     },
   ]);
-  packageObject = language[0] === "JavaScript" ? objJS : objTS;
-
+  packageObject = language === "JavaScript" ? objJS : objTS;
+  selectedLanguage = language;
   const { packageName } = await inquirer.prompt([
     {
       default: base_name,
@@ -53,7 +55,7 @@ const main = async () => {
   packageObject.description = description;
   const { entryPoint } = await inquirer.prompt([
     {
-      default: language[0] === "JavaScript" ? "server.js" : "server.ts",
+      default: language === "JavaScript" ? "server.js" : "server.ts",
       name: "entryPoint",
       message: "backend/package entry point:",
     },
@@ -67,11 +69,11 @@ const main = async () => {
       fileName = entryPoint;
     } else {
       fileName =
-        language[0] === "JavaScript" ? `${entryPoint}.js` : `${entryPoint}.ts`;
+        language === "JavaScript" ? `${entryPoint}.js` : `${entryPoint}.ts`;
     }
   } else {
     fileName =
-      language[0] === "JavaScript" ? `${entryPoint}.js` : `${entryPoint}.ts`;
+      language === "JavaScript" ? `${entryPoint}.js` : `${entryPoint}.ts`;
   }
   packageObject.main = fileName;
 
@@ -165,24 +167,24 @@ main()
     const { packageManager } = await inquirer.prompt([
       {
         choices: ["yarn", "npm"],
-        type: "checkbox",
+        type: "list",
         default: "yarn",
         name: "packageManager",
         message: "which package manager are you using?",
       },
     ]);
     const installing = async () => {
-      if (packageManager[0] === "yarn") {
+      if (packageManager === "yarn") {
         await exec("yarn", (_, __, ___) => {});
       } else {
         await exec("npm install", (_, __, ___) => {});
       }
       helperFunction.sep();
       console.log(
-        chalk.blue(`--- installing packages using ${packageManager[0]}...`)
+        chalk.blue(`--- installing packages using ${packageManager}...`)
       );
     };
     installing().then(() => {
-      helperFunction.message(packageManager[0]);
+      helperFunction.message(packageManager, selectedLanguage);
     });
   });
