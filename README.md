@@ -58,8 +58,13 @@ b) `cmd` 2
 ```
 yarn|npm dev
 ```
+
 c). Or you can use a single command which:
 This command is built basically uses [ts-node-dev](https://www.npmjs.com/package/ts-node-dev). You can configure flags based on your preferences
+
+```
+yarn|npm start:fast
+```
 
 **Note** You can also use the following command to start the typescript server with an single command:
 
