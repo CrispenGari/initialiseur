@@ -132,8 +132,11 @@ const main = async () => {
   );
 
   const readMePath = path.resolve(path.join(__dirname, "utils/readme.md"));
-  const gitIgnorePath = path.resolve(path.join(__dirname, "utils/.gitignore"));
-  const licencePath = path.resolve(path.join(__dirname, "utils/LICENSE"));
+
+  const gitIgnorePath = path.resolve(
+    path.join(__dirname, "utils/gitignore.txt")
+  );
+  const licencePath = path.resolve(path.join(__dirname, "utils/LICENSE.txt"));
   const readMe = await readFile(readMePath, "utf8");
   const gitIgnore = await readFile(gitIgnorePath, "utf8");
   const licenceText = await readFile(licencePath, "utf8");
