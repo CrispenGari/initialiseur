@@ -11,36 +11,35 @@ import chalk from "chalk";
 helperFunction.prompt();
 const cwd = process.cwd();
 const base_name = path.basename(cwd); // node
-
-let selectedLanguage: string = "TypeScript";
+let selectedLanguage: string = "typescript";
 
 const main = async () => {
   const baseDir = "src";
   let fileName = "";
   let packageObject: typeof objJS | typeof objTS;
-  const { language } = await inquirer.prompt([
-    {
-      choices: ["JavaScript", "TypeScript"],
-      type: "list",
-      default: "TypeScript",
-      name: "language",
-      message: "which language do you want to use for your backend app?",
-    },
-  ]);
-  packageObject = language === "JavaScript" ? objJS : objTS;
-  selectedLanguage = language;
   const { packageName } = await inquirer.prompt([
     {
-      default: base_name,
+      default: chalk.blue(base_name),
       name: "packageName",
       message: "backend/package name:",
     },
   ]);
+  const { language } = await inquirer.prompt([
+    {
+      choices: ["javascript", "typescript"],
+      type: "list",
+      default: chalk.blue("typescript"),
+      name: "language",
+      message: "which language do you want to use for your backend app?",
+    },
+  ]);
+  packageObject = language === "javascript" ? objJS : objTS;
+  selectedLanguage = language;
   packageObject.name = packageName;
 
   const { version } = await inquirer.prompt([
     {
-      default: "1.0.0",
+      default: chalk.blue("1.0.0"),
       name: "version",
       message: "backend/package version:",
     },
@@ -55,7 +54,9 @@ const main = async () => {
   packageObject.description = description;
   const { entryPoint } = await inquirer.prompt([
     {
-      default: language === "JavaScript" ? "server.js" : "server.ts",
+      default: chalk.blue(
+        language === "javascript" ? "server.js" : "server.ts"
+      ),
       name: "entryPoint",
       message: "backend/package entry point:",
     },
@@ -69,11 +70,11 @@ const main = async () => {
       fileName = entryPoint;
     } else {
       fileName =
-        language === "JavaScript" ? `${entryPoint}.js` : `${entryPoint}.ts`;
+        language === "javascript" ? `${entryPoint}.js` : `${entryPoint}.ts`;
     }
   } else {
     fileName =
-      language === "JavaScript" ? `${entryPoint}.js` : `${entryPoint}.ts`;
+      language === "javascript" ? `${entryPoint}.js` : `${entryPoint}.ts`;
   }
   packageObject.main = fileName;
 
@@ -103,6 +104,8 @@ const main = async () => {
       name: "license",
       default: "MIT",
       message: "backend/package license:",
+      type: "list",
+      choices: ["MIT"],
     },
   ]);
   packageObject.license = license;
@@ -120,6 +123,7 @@ const main = async () => {
     "utf8"
   );
 
+  helperFunction.creatingFilesPrompt(fileName);
   await writeFile(
     path.resolve(path.resolve(cwd, `${baseDir}/${fileName}`)),
     fileName.split(".")[1].toLocaleLowerCase() === "ts" ? tsCode : jsCode
@@ -130,14 +134,16 @@ const main = async () => {
   );
 
   const readMePath = path.resolve(path.join(__dirname, "utils/readme.md"));
+  const gitIgnorePath = path.resolve(path.join(__dirname, "utils/.gitignore"));
+  const licencePath = path.resolve(path.join(__dirname, "utils/LICENSE"));
   const readMe = await readFile(readMePath, "utf8");
+  const gitIgnore = await readFile(gitIgnorePath, "utf8");
+  const licenceText = await readFile(licencePath, "utf8");
 
-  await writeFile(
-    path.resolve(cwd, ".gitignore"),
-    `# node modules\nnode_modules\n\n# .env\n.env\n\n`
-  );
+  await writeFile(path.resolve(cwd, ".gitignore"), gitIgnore);
   await writeFile(path.resolve(cwd, ".env"), `# environment variables here`);
   await writeFile(path.resolve(cwd, "README.md"), readMe);
+  await writeFile(path.resolve(cwd, "LICENCE"), licenceText);
 
   let config = "";
   if (fileName.split(".")[1].toLocaleLowerCase() === "ts") {
@@ -184,7 +190,7 @@ main()
         chalk.blue(`--- installing packages using ${packageManager}...`)
       );
     };
-    installing().then(() => {
+    await installing().then(() => {
       helperFunction.message(packageManager, selectedLanguage);
     });
   });

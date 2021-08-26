@@ -12,6 +12,7 @@ const objJS = {
   dependencies: {
     cors: "^2.8.5",
     express: "^4.17.1",
+    dotenv: "^10.0.0",
   },
   keywords: [],
   devDependencies: {
@@ -38,6 +39,7 @@ const objTS = {
     "ts-node": "^10.2.0",
     typescript: "^4.3.5",
     "ts-node-dev": "^1.1.8",
+    dotenv: "^10.0.0",
   },
   devDependencies: {
     "@types/node": "^16.6.1",
