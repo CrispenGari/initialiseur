@@ -2,10 +2,11 @@
 
 This is a simple boiler plate command line tool that will generate a node backend boiler plate with either javascript or typescript express server ready to run.
 
-### Demo
+### Demo `(Screen Shot)`
 
 <p align="center">
-<img src="https://github.com/CrispenGari/nodejs-backend/blob/main/bandicam%202021-08-21%2000-21-41-286.jpg"/>
+<img src="https://github.com/CrispenGari/nodejs-backend/blob/main/bandicam%202021-08-26%2017-57-57-488.jpg"/>
+
 </p>
 
 ### Usage
