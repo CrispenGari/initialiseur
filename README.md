@@ -25,6 +25,7 @@ npx @crispengari/node-backend
     - 🗄 .gitignore
     - 🗄 README.md
     - 🗄 package.json
+    - 🗄 LISENSE (MIT)
     - 🗄 tsconfig.json (if typescript is selected as a language)
 ```
 

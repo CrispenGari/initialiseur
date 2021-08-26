@@ -19,16 +19,17 @@ const main = async () => {
   let packageObject: typeof objJS | typeof objTS;
   const { packageName } = await inquirer.prompt([
     {
-      default: chalk.blue(base_name),
+      default: base_name,
       name: "packageName",
       message: "backend/package name:",
+      type: "input",
     },
   ]);
   const { language } = await inquirer.prompt([
     {
       choices: ["javascript", "typescript"],
       type: "list",
-      default: chalk.blue("typescript"),
+      default: "typescript",
       name: "language",
       message: "which language do you want to use for your backend app?",
     },
@@ -39,7 +40,7 @@ const main = async () => {
 
   const { version } = await inquirer.prompt([
     {
-      default: chalk.blue("1.0.0"),
+      default: "1.0.0",
       name: "version",
       message: "backend/package version:",
     },
@@ -54,14 +55,12 @@ const main = async () => {
   packageObject.description = description;
   const { entryPoint } = await inquirer.prompt([
     {
-      default: chalk.blue(
-        language === "javascript" ? "server.js" : "server.ts"
-      ),
+      default: language === "javascript" ? "server.js" : "server.ts",
+
       name: "entryPoint",
       message: "backend/package entry point:",
     },
   ]);
-
   if (entryPoint.split(".").length > 1) {
     if (
       entryPoint.split(".")[1] === "js" ||
@@ -77,7 +76,6 @@ const main = async () => {
       language === "javascript" ? `${entryPoint}.js` : `${entryPoint}.ts`;
   }
   packageObject.main = fileName;
-
   if (fileName.split(".")[1] === "js") {
     packageObject.scripts.start = `node src/${fileName}`;
     packageObject.scripts.dev = `nodemon src/${fileName}`;
@@ -144,16 +142,8 @@ const main = async () => {
   await writeFile(path.resolve(cwd, ".env"), `# environment variables here`);
   await writeFile(path.resolve(cwd, "README.md"), readMe);
   await writeFile(path.resolve(cwd, "LICENCE"), licenceText);
-
   let config = "";
   if (fileName.split(".")[1].toLocaleLowerCase() === "ts") {
-    helperFunction.sep();
-    console.log(
-      chalk.bgGreen(
-        "we have detected that you are using typescript therefore we are generating tsconfig.json for you.."
-      )
-    );
-    helperFunction.sep();
     const tsconfigPath = path.resolve(
       path.join(__dirname, "configs/tsconfig.json")
     );
