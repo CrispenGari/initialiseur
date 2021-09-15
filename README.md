@@ -5,7 +5,8 @@ This is a simple boiler plate command line tool that will generate a node backen
 ### Demo `(Screen Shot)`
 
 <p align="center">
-<img src="https://github.com/CrispenGari/nodejs-backend/blob/main/bandicam%202021-08-26%2017-57-57-488.jpg"/>
+
+<img src="https://github.com/CrispenGari/nodejs-backend/blob/main/bandicam%202021-09-15%2016-05-46-258.jpg"/>
 
 </p>
 
