@@ -30,6 +30,8 @@ const creatingFilesPrompt = (fileName: string): void => {
   sep();
   console.log(chalk.green("Generating Basic Files"));
   console.log(`  - ${chalk.bgBlue(" src ")}`);
+  console.log(`     - ${chalk.bgGreen(" routes ")}`);
+  console.log(`       - ${chalk.blue(`index.${fileName.split(".")[1]} `)}`);
   console.log(`     - ${chalk.blue(fileName)}`);
   for (let i = 0; i < files.length; i++) {
     console.log(`  - ${chalk.blue(files[i])}`);

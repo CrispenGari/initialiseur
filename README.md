@@ -22,6 +22,8 @@ npx @crispengari/node-backend
 ```
 - 📁 parent folder
     - 📁 src
+        - 📁 routes
+            - index.[j|s]
         - server.[j|s]
     - 🗄 .gitignore
     - 🗄 README.md

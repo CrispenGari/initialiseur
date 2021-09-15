@@ -111,6 +111,10 @@ const main = async () => {
   if (!fs.existsSync(path.resolve(cwd, baseDir))) {
     await helperFunction.createFolders(path.resolve(cwd, baseDir));
   }
+  let routesFolder: string = "src/routes";
+  if (!fs.existsSync(path.resolve(cwd, routesFolder))) {
+    await helperFunction.createFolders(path.resolve(cwd, routesFolder));
+  }
 
   const jsCode = await readFile(
     path.resolve(path.join(__dirname, "utils/server.js")),
@@ -120,11 +124,30 @@ const main = async () => {
     path.resolve(path.join(__dirname, "utils/server.ts")),
     "utf8"
   );
+  const jsCodeRouter = await readFile(
+    path.resolve(path.join(__dirname, "utils/router.js")),
+    "utf8"
+  );
+  const tsCodeRouter = await readFile(
+    path.resolve(path.join(__dirname, "utils/router.ts")),
+    "utf8"
+  );
 
   helperFunction.creatingFilesPrompt(fileName);
   await writeFile(
     path.resolve(path.resolve(cwd, `${baseDir}/${fileName}`)),
     fileName.split(".")[1].toLocaleLowerCase() === "ts" ? tsCode : jsCode
+  );
+
+  const routesFile: string =
+    fileName.split(".")[1].toLocaleLowerCase() === "ts"
+      ? "index.ts"
+      : "index.js";
+  await writeFile(
+    path.resolve(path.resolve(cwd, `${routesFolder}/${routesFile}`)),
+    fileName.split(".")[1].toLocaleLowerCase() === "ts"
+      ? tsCodeRouter
+      : jsCodeRouter
   );
   await writeFile(
     path.resolve(cwd, "package.json"),
