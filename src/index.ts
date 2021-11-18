@@ -4,16 +4,15 @@ import inquirer from "inquirer";
 import { writeFile, readFile } from "fs/promises";
 import fs from "fs";
 import helperFunction from "./constants";
-import { exec } from "child_process";
 import { objJS, objTS } from "./utils";
-import chalk from "chalk";
+import { name, version } from "../package.json";
 
-helperFunction.prompt();
 const cwd = process.cwd();
 const base_name = path.basename(cwd); // node
 let selectedLanguage: string = "typescript";
-
+const currentVersion: string = version;
 const main = async () => {
+  await helperFunction.prompt(name, currentVersion, cwd);
   const baseDir = "src";
   let fileName = "";
   let packageObject: typeof objJS | typeof objTS;
@@ -195,18 +194,6 @@ main()
         message: "which package manager are you using?",
       },
     ]);
-    const installing = async () => {
-      if (packageManager === "yarn") {
-        await exec("yarn", (_, __, ___) => {});
-      } else {
-        await exec("npm install", (_, __, ___) => {});
-      }
-      helperFunction.sep();
-      console.log(
-        chalk.blue(`--- installing packages using ${packageManager}...`)
-      );
-    };
-    await installing().then(() => {
-      helperFunction.message(packageManager, selectedLanguage);
-    });
+    await helperFunction.installPackages(packageManager);
+    await helperFunction.displayMessage(packageManager, selectedLanguage);
   });

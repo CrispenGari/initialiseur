@@ -1,18 +1,35 @@
 import chalk from "chalk";
-import fs from "fs/promises";
+import fs, { readFile } from "fs/promises";
 import path from "path";
+import { exec } from "child_process";
 const sep = (): void => {
   console.log();
 };
-const prompt = (): void => {
+const prompt = async (
+  name: string,
+  version: string,
+  cwd: string
+): Promise<void> => {
+  const t: string = await readFile(
+    path.resolve(path.join(cwd, "src/files/art.txt")),
+    { encoding: "utf8" }
+  );
+  console.log(chalk.cyan(t));
+  console.log(
+    chalk.italic(
+      chalk.gray(
+        "    creating nodejs applications(apis) for both development and production."
+      )
+    )
+  );
   sep();
   console.log(
-    " ",
-    chalk.bgGreen(" NODE BACKEND "),
-    `(${chalk.bgYellow(" javascript")}${chalk.green("/")}${chalk.bgBlue(
+    ` ${chalk.cyan(name)} version ${chalk.green(version)}`,
+    `(${chalk.bgYellow(" javascript ")}${chalk.green("/")}${chalk.bgBlue(
       "typescript "
     )})`
   );
+  sep();
   sep();
 };
 
@@ -111,11 +128,30 @@ const message = (packageManager: string, language: string): void => {
 const createFolders = async (pathName: string): Promise<any> => {
   await fs.mkdir(path.resolve(__dirname, pathName));
 };
+
+const installPackages = async (packageManager: string): Promise<void> => {
+  if (packageManager === "yarn") {
+    await exec("yarn", (_, __, ___) => {});
+  } else {
+    await exec("npm install", (_, __, ___) => {});
+  }
+  sep();
+  console.log(chalk.blue(`--- installing packages using ${packageManager}...`));
+};
+
+const displayMessage = async (
+  packageManager: string,
+  selectedLanguage: string
+): Promise<void> => {
+  message(packageManager, selectedLanguage);
+};
 const helperFunction: any = {
   prompt,
   createFolders,
   sep,
   message,
   creatingFilesPrompt,
+  installPackages,
+  displayMessage,
 };
 export default helperFunction;
