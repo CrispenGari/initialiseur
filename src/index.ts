@@ -12,7 +12,7 @@ const base_name = path.basename(cwd); // node
 let selectedLanguage: string = "typescript";
 const currentVersion: string = version;
 const main = async () => {
-  await helperFunction.prompt(name, currentVersion, cwd);
+  await helperFunction.prompt(name, currentVersion, __dirname);
   const baseDir = "src";
   let fileName = "";
   let packageObject: typeof objJS | typeof objTS;

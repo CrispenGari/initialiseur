@@ -8,10 +8,10 @@ const sep = (): void => {
 const prompt = async (
   name: string,
   version: string,
-  cwd: string
+  __dirname: string
 ): Promise<void> => {
   const t: string = await readFile(
-    path.resolve(path.join(cwd, "src/files/art.txt")),
+    path.resolve(path.join(__dirname, "files/art.txt")),
     { encoding: "utf8" }
   );
   console.log(chalk.cyan(t));

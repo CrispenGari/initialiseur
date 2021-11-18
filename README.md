@@ -10,28 +10,6 @@ To use this clt it is very easy all you have to do is to run the following comma
 npx @crispengari/node-backend
 ```
 
-### OR Install it globally by running the following command
-
-1. using `yarn`
-
-```shell
-yarn global  @crispengari/node-backend
-```
-
-2. using `npm`
-
-```shell
-npm install -g  @crispengari/node-backend
-```
-
-### Then
-
-You can run the initializer directly by running the following command:
-
-```
-@crispengari/node-backend
-```
-
 ### Generated folders and files.
 
 ```
@@ -90,3 +68,29 @@ yarn|npm start:fast
 ```
 yarn|npm start
 ```
+
+### Executing specific versions
+
+You can be able to execute the specific versions of `@crispengari/node-backend` using the node package executer (npx)
+
+1. Running the node package executer `npx`
+
+```shell
+npx @crispengari/node-backend@<version>
+
+# example (make sure the version exists before running this)
+npx @crispengari/node-backend@<1.3.2>
+```
+
+### Available working versions
+
+### `v1`
+
+1. `@crispengari/node-backend@1.3.2`
+2. `@crispengari/node-backend@1.3.6`
+3. `@crispengari/node-backend@1.3.7`
+4. `@crispengari/node-backend@1.3.8`
+
+### `v2`
+
+1. `@crispengari/node-backend@2.0.1`

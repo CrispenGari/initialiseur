@@ -1,8 +1,8 @@
 {
   "name": "@crispengari/node-backend",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "main": "src index.ts",
-  "author": "",
+  "author": "@crispengari",
   "license": "MIT",
   "bin": "src/index.ts",
   "description": "THIS IS A BOILER PLATE THAT INITIALIZE A NODE EXPRESS BACKEND FOR TYPESCRIPT AND JAVASCRIPT",
