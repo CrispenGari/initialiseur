@@ -18,7 +18,7 @@ const prompt = async (
   console.log(
     chalk.italic(
       chalk.gray(
-        "    creating nodejs applications(apis) for both development and production."
+        " creating nodejs applications(apis) for both development and production."
       )
     )
   );
@@ -33,6 +33,52 @@ const prompt = async (
   sep();
 };
 
+const promptHelp = async (
+  name: string,
+  version: string,
+  __dirname: string
+): Promise<void> => {
+  const t: string = await readFile(
+    path.resolve(path.join(__dirname, "files/help.txt")),
+    { encoding: "utf8" }
+  );
+  console.log(chalk.cyan(t));
+  console.log(
+    chalk.italic(
+      chalk.gray(
+        " creating nodejs applications(apis) for both development and production."
+      )
+    )
+  );
+  sep();
+
+  console.log(
+    ` ${chalk.cyan(name)} version ${chalk.green(version)}`,
+    `(${chalk.bgYellow(" javascript ")}${chalk.green("/")}${chalk.bgBlue(
+      "typescript "
+    )})`
+  );
+  sep();
+  sep();
+  console.log(
+    chalk.green(" init <package name>"),
+    chalk.gray(" for initializing a new backend server.")
+  );
+  console.log(
+    chalk.green(" -h"),
+    chalk.cyan("or"),
+    chalk.green("--help"),
+    chalk.gray(" for help.")
+  );
+  console.log(
+    chalk.green(" -v"),
+    chalk.cyan("or"),
+    chalk.green("--version"),
+    chalk.gray(" display the version for initializr.")
+  );
+  sep();
+  sep();
+};
 const creatingFilesPrompt = (fileName: string): void => {
   const files: string[] = [
     "README.md",
@@ -153,5 +199,6 @@ const helperFunction: any = {
   creatingFilesPrompt,
   installPackages,
   displayMessage,
+  promptHelp,
 };
 export default helperFunction;

@@ -8,15 +8,31 @@ import { objJS, objTS } from "./utils";
 import { name, version } from "../package.json";
 
 const cwd = process.cwd();
-const base_name = path.basename(cwd); // node
+const args: string[] = process.argv
+  .slice(2)
+  .map((ele) => ele.toLowerCase().trim());
+
+const base_name: string = args[1] ?? path.basename(cwd); // node or the one chosen during init
 let selectedLanguage: string = "typescript";
 const currentVersion: string = version;
+
+// interface
+
+const prompt = async (): Promise<void> => {
+  await helperFunction.prompt(name, currentVersion, __dirname);
+};
+// unknown command
+const help = async (): Promise<void> => {
+  await helperFunction.promptHelp(name, currentVersion, __dirname);
+};
+
+// main initializer
 const main = async () => {
   await helperFunction.prompt(name, currentVersion, __dirname);
   const baseDir = "src";
   let fileName = "";
   let packageObject: typeof objJS | typeof objTS;
-  const { packageName } = await inquirer.prompt([
+  let { packageName } = await inquirer.prompt([
     {
       default: base_name,
       name: "packageName",
@@ -24,6 +40,7 @@ const main = async () => {
       type: "input",
     },
   ]);
+
   const { language } = await inquirer.prompt([
     {
       choices: ["javascript", "typescript"],
@@ -182,18 +199,28 @@ const main = async () => {
 
 helperFunction.sep();
 
-main()
-  .catch((error) => console.error(error))
-  .then(async () => {
-    const { packageManager } = await inquirer.prompt([
-      {
-        choices: ["yarn", "npm"],
-        type: "list",
-        default: "yarn",
-        name: "packageManager",
-        message: "which package manager are you using?",
-      },
-    ]);
-    await helperFunction.installPackages(packageManager);
-    await helperFunction.displayMessage(packageManager, selectedLanguage);
-  });
+if (args.length === 0) {
+  prompt();
+} else if (args[0] === "-h" || args[0] === "--help") {
+  help();
+} else if (args[0] === "-v" || args[0] === "--version") {
+  prompt();
+} else if (args[0] === "init") {
+  main()
+    .catch((error) => console.error(error))
+    .then(async () => {
+      const { packageManager } = await inquirer.prompt([
+        {
+          choices: ["yarn", "npm"],
+          type: "list",
+          default: "yarn",
+          name: "packageManager",
+          message: "which package manager are you using?",
+        },
+      ]);
+      await helperFunction.installPackages(packageManager);
+      await helperFunction.displayMessage(packageManager, selectedLanguage);
+    });
+} else {
+  prompt();
+}
