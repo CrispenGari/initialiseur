@@ -1,4 +1,4 @@
-## Node Backend
+## initialiseur-app
 
 A backend boiler plate for a node backend with default express configurations.
 
@@ -6,8 +6,10 @@ A backend boiler plate for a node backend with default express configurations.
 
 Run
 
-```
-npx @crispengari/node-backend
+```shell
+npx initialiseur init <package|backend name>
+# or
+initialiseur init <package|backend name>
 ```
 
 ### Then

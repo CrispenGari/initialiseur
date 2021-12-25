@@ -7,6 +7,8 @@ router.get("/", (req, res) => {
     name: "backend",
     language: "typescript",
     message: "hello world!",
+    programmer: "@programer",
+    moto: "i'm a programer i have no life!"
   });
 });
 

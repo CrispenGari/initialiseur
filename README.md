@@ -1,6 +1,6 @@
 ## initialiseur.
 
-This is a package that can be installed on your computer to easily initialize `node.js` backend server. This backend server is an `express` application with `cors` configured that is ready to run on a configured default port `3001` which can be modified in code. This package can initialize boiler plate code for a basic express application for the following packages:
+This is a package that can be installed on your computer to easily initialize `node.js` backend server/application. This backend server is an `express` application with `cors` configured that is ready to run on a configured default port `3001` which can be modified in code. This package can initialize boiler plate code for a basic express application for the following languages:
 
 1. javascript
 2. typescript `(default)`
@@ -163,8 +163,9 @@ npx @crispengari/node-backend@<1.3.2>
 ### `v3`
 
 1. `initialiseur@3.0.0`
-1. `initialiseur@3.0.1`
+2. `initialiseur@3.0.1`
+3. `initialiseur@3.0.2`
 
 ### Why `initialiseur`?
 
-`initialiseur` is a name that I got from google translation for the name `initializer`. I created this package so that developers can create their backend applications with typescript or javascript without running into a headache of creating files and installing basic packages like `express`.
+`initialiseur` is a name that I got from google translation english to french for the name `initializer`. I created this package so that developers can create their backend applications with typescript or javascript without running into a headache of creating files and installing basic packages like `express`.
