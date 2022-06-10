@@ -1,11 +1,15 @@
 #!/usr/bin/env ts-node
 import path from "path";
+import "dotenv/config";
 import inquirer from "inquirer";
 import { writeFile, readFile } from "fs/promises";
 import fs from "fs";
 import helperFunction from "./constants";
 import { objJS, objTS } from "./utils";
 import { name, version } from "../package.json";
+import licenses from "./utils/licenses/licenses.json";
+import fetch from "cross-fetch";
+import process from "process";
 
 const cwd = process.cwd();
 const args: string[] = process.argv
@@ -119,9 +123,13 @@ const main = async () => {
       default: "MIT",
       message: "backend/package license:",
       type: "list",
-      choices: ["MIT"],
+      choices: licenses.map((l) => l.spdx_id),
     },
   ]);
+  const chosenLicense = licenses.find((l) => l.spdx_id === license);
+
+  let res = await fetch(chosenLicense?.url as any);
+  const licenseData = await res.json();
   packageObject.license = license;
 
   if (!fs.existsSync(path.resolve(cwd, baseDir))) {
@@ -169,21 +177,16 @@ const main = async () => {
     path.resolve(cwd, "package.json"),
     JSON.stringify(packageObject, null, 2)
   );
-
   const readMePath = path.resolve(path.join(__dirname, "utils/readme.md"));
-
   const gitIgnorePath = path.resolve(
     path.join(__dirname, "utils/gitignore.txt")
   );
-  const licencePath = path.resolve(path.join(__dirname, "utils/LICENSE.txt"));
   const readMe = await readFile(readMePath, "utf8");
   const gitIgnore = await readFile(gitIgnorePath, "utf8");
-  const licenceText = await readFile(licencePath, "utf8");
-
   await writeFile(path.resolve(cwd, ".gitignore"), gitIgnore);
   await writeFile(path.resolve(cwd, ".env"), `# environment variables here`);
   await writeFile(path.resolve(cwd, "README.md"), readMe);
-  await writeFile(path.resolve(cwd, "LICENCE"), licenceText);
+  await writeFile(path.resolve(cwd, "LICENCE"), licenseData?.body);
   let config = "";
   if (fileName.split(".")[1].toLocaleLowerCase() === "ts") {
     const tsconfigPath = path.resolve(
@@ -199,7 +202,23 @@ const main = async () => {
 
 helperFunction.sep();
 
-if (args.length === 0) {
+main()
+  .catch((error) => console.error(error))
+  .then(async () => {
+    const { packageManager } = await inquirer.prompt([
+      {
+        choices: ["yarn", "npm"],
+        type: "list",
+        default: "yarn",
+        name: "packageManager",
+        message: "which package manager are you using?",
+      },
+    ]);
+    await helperFunction.installPackages(packageManager);
+    await helperFunction.displayMessage(packageManager, selectedLanguage);
+  });
+
+if (args.length === 1) {
   prompt();
 } else if (args[0] === "-h" || args[0] === "--help") {
   help();

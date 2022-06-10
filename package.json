@@ -1,6 +1,6 @@
 {
   "name": "initialiseur",
-  "version": "3.0.2",
+  "version": "4.0.0",
   "main": "src index.ts",
   "author": "@crispengari",
   "license": "MIT",
@@ -9,8 +9,7 @@
   "scripts": {
     "watch": "tsc -w",
     "start": "ts-node src/index.ts",
-    "dev": "nodemon dist/index.ts",
-    "start:fast": "ts-node-dev --respawn src/index.ts"
+    "dev": "nodemon dist/index.ts"
   },
   "dependencies": {
     "@types/inquirer": "^7.3.3",
@@ -18,12 +17,16 @@
     "@types/npm": "^7.19.0",
     "chalk": "^4.1.2",
     "cors": "^2.8.5",
+    "cross-fetch": "^3.1.5",
     "dotenv": "^10.0.0",
     "inquirer": "^8.1.2",
+    "node-fetch": "^3.2.6",
+    "octokit": "^1.7.2",
     "ts-node": "^10.2.1",
     "typescript": "^4.3.5"
   },
   "devDependencies": {
+    "@types/node-fetch": "^2.6.1",
     "nodemon": "^2.0.12"
   },
   "bugs": {
