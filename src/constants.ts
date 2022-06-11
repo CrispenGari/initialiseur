@@ -79,14 +79,8 @@ const promptHelp = async (
   sep();
   sep();
 };
-const creatingFilesPrompt = (fileName: string): void => {
-  const files: string[] = [
-    "README.md",
-    ".gitignore",
-    ".env",
-    "LICENCE",
-    "package.json",
-  ];
+const creatingFilesPrompt = (fileName: string, files: string[]): void => {
+  files.push("package.json");
   if (fileName.split(".")[1] === "ts") {
     files.push("tsconfig.json");
   }
@@ -176,13 +170,15 @@ const createFolders = async (pathName: string): Promise<any> => {
 };
 
 const installPackages = async (packageManager: string): Promise<void> => {
-  if (packageManager === "yarn") {
-    await exec("yarn", (_, __, ___) => {});
-  } else {
-    await exec("npm install", (_, __, ___) => {});
-  }
   sep();
   console.log(chalk.blue(`--- installing packages using ${packageManager}...`));
+  if (packageManager === "yarn") {
+    await exec("yarn", (_, __, ___) => {});
+    await exec("yarn upgrade", (_, __, ___) => {});
+  } else {
+    await exec("npm install", (_, __, ___) => {});
+    await exec("npm update", (_, __, ___) => {});
+  }
 };
 
 const displayMessage = async (

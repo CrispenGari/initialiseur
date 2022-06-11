@@ -1,6 +1,5 @@
 #!/usr/bin/env ts-node
 import path from "path";
-import "dotenv/config";
 import inquirer from "inquirer";
 import { writeFile, readFile } from "fs/promises";
 import fs from "fs";
@@ -126,8 +125,19 @@ const main = async () => {
       choices: licenses.map((l) => l.spdx_id),
     },
   ]);
-  const chosenLicense = licenses.find((l) => l.spdx_id === license);
 
+  const { files } = await inquirer.prompt([
+    {
+      name: "files",
+      type: "checkbox",
+      choices: [".gitignore", "Readme.md", "LICENSE", ".env"],
+      message:
+        "which additional files do you want to add for your backend app?",
+      default: [".gitignore", ".env"],
+    },
+  ]);
+
+  const chosenLicense = licenses.find((l) => l.spdx_id === license);
   let res = await fetch(chosenLicense?.url as any);
   const licenseData = await res.json();
   packageObject.license = license;
@@ -157,7 +167,7 @@ const main = async () => {
     "utf8"
   );
 
-  helperFunction.creatingFilesPrompt(fileName);
+  helperFunction.creatingFilesPrompt(fileName, files);
   await writeFile(
     path.resolve(path.resolve(cwd, `${baseDir}/${fileName}`)),
     fileName.split(".")[1].toLocaleLowerCase() === "ts" ? tsCode : jsCode
@@ -183,10 +193,17 @@ const main = async () => {
   );
   const readMe = await readFile(readMePath, "utf8");
   const gitIgnore = await readFile(gitIgnorePath, "utf8");
-  await writeFile(path.resolve(cwd, ".gitignore"), gitIgnore);
-  await writeFile(path.resolve(cwd, ".env"), `# environment variables here`);
-  await writeFile(path.resolve(cwd, "README.md"), readMe);
-  await writeFile(path.resolve(cwd, "LICENCE"), licenseData?.body);
+  files.indexOf(".gitignore") !== -1 &&
+    (await writeFile(path.resolve(cwd, ".gitignore"), gitIgnore));
+  files.indexOf(".env") !== -1 &&
+    (await writeFile(
+      path.resolve(cwd, ".env"),
+      `# environment variables here`
+    ));
+  files.indexOf("README.md") !== -1 &&
+    (await writeFile(path.resolve(cwd, "README.md"), readMe));
+  files.indexOf("LICENSE") !== -1 &&
+    (await writeFile(path.resolve(cwd, "LICENSE"), licenseData?.body));
   let config = "";
   if (fileName.split(".")[1].toLocaleLowerCase() === "ts") {
     const tsconfigPath = path.resolve(
@@ -202,23 +219,7 @@ const main = async () => {
 
 helperFunction.sep();
 
-main()
-  .catch((error) => console.error(error))
-  .then(async () => {
-    const { packageManager } = await inquirer.prompt([
-      {
-        choices: ["yarn", "npm"],
-        type: "list",
-        default: "yarn",
-        name: "packageManager",
-        message: "which package manager are you using?",
-      },
-    ]);
-    await helperFunction.installPackages(packageManager);
-    await helperFunction.displayMessage(packageManager, selectedLanguage);
-  });
-
-if (args.length === 1) {
+if (args.length === 0) {
   prompt();
 } else if (args[0] === "-h" || args[0] === "--help") {
   help();

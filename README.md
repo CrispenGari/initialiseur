@@ -159,6 +159,11 @@ npx @crispengari/node-backend@<1.3.2>
 2. `initialiseur@3.0.1`
 3. `initialiseur@3.0.2`
 
+### What's new in `initialiseur@4.*.*`?
+
+- In this version developers are allowed to choose licenses templates from the available ones during backend initialization.
+- Developers can also select which additional optional files they want to add in their project during initialization.
+
 ### Why `initialiseur`?
 
 `initialiseur` is a name that I got from google translation english to french for the name `initializer`. I created this package so that developers can create their backend applications with typescript or javascript without running into a headache of creating files and installing basic packages like `express`.
