@@ -15,6 +15,7 @@ const objJS = {
     dependencies: {
         cors: "^2.8.5",
         express: "^4.17.1",
+        dotenv: "^10.0.0",
     },
     keywords: [],
     devDependencies: {
@@ -34,12 +35,15 @@ const objTS = {
         watch: "tsc -w",
         start: "ts-node src/server.ts",
         dev: "nodemon dist/server.js",
+        "start:fast": "ts-node-dev --respawn src/server.ts",
     },
     dependencies: {
         cors: "^2.8.5",
         express: "^4.17.1",
         "ts-node": "^10.2.0",
         typescript: "^4.3.5",
+        "ts-node-dev": "^1.1.8",
+        dotenv: "^10.0.0",
     },
     devDependencies: {
         "@types/node": "^16.6.1",

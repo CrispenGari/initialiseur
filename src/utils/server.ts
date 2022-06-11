@@ -1,7 +1,9 @@
+import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import router from "./routes";
 
+dotenv.config();
 // ----
 const app: express.Application = express();
 const PORT: any = 3001 || process.env.PORT;
