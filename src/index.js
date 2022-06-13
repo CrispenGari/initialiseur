@@ -149,19 +149,19 @@ const main = async () => {
   }
 
   const jsCode = await readFile(
-    path.resolve(path.join(__dirname, "utils/server.js")),
+    path.resolve(path.join(__dirname, "utils/js/server")),
     "utf8"
   );
   const tsCode = await readFile(
-    path.resolve(path.join(__dirname, "utils/server.ts")),
+    path.resolve(path.join(__dirname, "utils/ts/server")),
     "utf8"
   );
   const jsCodeRouter = await readFile(
-    path.resolve(path.join(__dirname, "utils/router.js")),
+    path.resolve(path.join(__dirname, "utils/js/router")),
     "utf8"
   );
   const tsCodeRouter = await readFile(
-    path.resolve(path.join(__dirname, "utils/router.ts")),
+    path.resolve(path.join(__dirname, "utils/ts/router")),
     "utf8"
   );
 
