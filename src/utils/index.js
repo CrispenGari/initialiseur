@@ -31,7 +31,6 @@ const objTS = {
     watch: "tsc -w",
     start: "ts-node src/server.ts",
     dev: "nodemon dist/server.js",
-    "start:fast": "ts-node-dev --respawn src/server.ts",
   },
   dependencies: {
     cors: "^2.8.5",

@@ -1,4 +1,4 @@
-const  express= require("express") ;
+const express = require("express");
 
 const router = express.Router();
 
@@ -8,8 +8,8 @@ router.get("/", (req, res) => {
     language: "typescript",
     message: "hello world!",
     programmer: "@programer",
-    moto: "i'm a programer i have no life!"
+    moto: "i'm a programer i have no life!",
   });
 });
 
-export default router;
+module.exports = router;

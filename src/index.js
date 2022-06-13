@@ -128,7 +128,7 @@ const main = async () => {
     {
       name: "files",
       type: "checkbox",
-      choices: [".gitignore", "Readme.md", "LICENSE", ".env"],
+      choices: [".gitignore", "README.md", "LICENSE", ".env"],
       message:
         "which additional files do you want to add for your backend app?",
       default: [".gitignore", ".env"],
