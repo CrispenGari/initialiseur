@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env node
 const inquirer = require("inquirer");
 const path = require("path");
 const { writeFile, readFile } = require("fs/promises");

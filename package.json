@@ -1,6 +1,6 @@
 {
   "name": "initialiseur",
-  "version": "4.0.8",
+  "version": "4.0.9",
   "main": "src index.js",
   "author": "@crispengari",
   "license": "MIT",
