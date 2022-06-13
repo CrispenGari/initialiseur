@@ -1,16 +1,12 @@
-import chalk from "chalk";
-import fs, { readFile } from "fs/promises";
-import path from "path";
-import { exec } from "child_process";
-const sep = (): void => {
+const chalk = require("chalk");
+const { readFile, mkdir } = require("fs/promises");
+const path = require("path");
+const { exec } = require("child_process");
+const sep = () => {
   console.log();
 };
-const prompt = async (
-  name: string,
-  version: string,
-  __dirname: string
-): Promise<void> => {
-  const t: string = await readFile(
+const prompt = async (name, version, __dirname) => {
+  const t = await readFile(
     path.resolve(path.join(__dirname, "files/art.txt")),
     { encoding: "utf8" }
   );
@@ -33,12 +29,8 @@ const prompt = async (
   sep();
 };
 
-const promptHelp = async (
-  name: string,
-  version: string,
-  __dirname: string
-): Promise<void> => {
-  const t: string = await readFile(
+const promptHelp = async (name, version, __dirname) => {
+  const t = await readFile(
     path.resolve(path.join(__dirname, "files/help.txt")),
     { encoding: "utf8" }
   );
@@ -79,7 +71,7 @@ const promptHelp = async (
   sep();
   sep();
 };
-const creatingFilesPrompt = (fileName: string, files: string[]): void => {
+const creatingFilesPrompt = (fileName, files) => {
   files.push("package.json");
   if (fileName.split(".")[1] === "ts") {
     files.push("tsconfig.json");
@@ -96,7 +88,7 @@ const creatingFilesPrompt = (fileName: string, files: string[]): void => {
   sep();
 };
 
-const message = (packageManager: string, language: string): void => {
+const message = (packageManager, language) => {
   sep();
   console.log(chalk.bgGreen("-- all done!! "));
 
@@ -165,11 +157,11 @@ const message = (packageManager: string, language: string): void => {
   }
 };
 
-const createFolders = async (pathName: string): Promise<any> => {
-  await fs.mkdir(path.resolve(__dirname, pathName));
+const createFolders = async (pathName) => {
+  await mkdir(path.resolve(__dirname, pathName));
 };
 
-const installPackages = async (packageManager: string): Promise<void> => {
+const installPackages = async (packageManager) => {
   sep();
   console.log(chalk.blue(`--- installing packages using ${packageManager}...`));
   if (packageManager === "yarn") {
@@ -181,13 +173,10 @@ const installPackages = async (packageManager: string): Promise<void> => {
   }
 };
 
-const displayMessage = async (
-  packageManager: string,
-  selectedLanguage: string
-): Promise<void> => {
+const displayMessage = async (packageManager, selectedLanguage) => {
   message(packageManager, selectedLanguage);
 };
-const helperFunction: any = {
+const helperFunction = {
   prompt,
   createFolders,
   sep,
@@ -197,4 +186,4 @@ const helperFunction: any = {
   displayMessage,
   promptHelp,
 };
-export default helperFunction;
+module.exports = helperFunction;

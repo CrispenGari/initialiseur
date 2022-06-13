@@ -1,31 +1,29 @@
 #!/usr/bin/env ts-node
-import path from "path";
-import inquirer from "inquirer";
-import { writeFile, readFile } from "fs/promises";
-import fs from "fs";
-import helperFunction from "./constants";
-import { objJS, objTS } from "./utils";
-import { name, version } from "../package.json";
-import licenses from "./utils/licenses/licenses.json";
-import fetch from "cross-fetch";
-import process from "process";
+const inquirer = require("inquirer");
+const path = require("path");
+const { writeFile, readFile } = require("fs/promises");
+const fs = require("fs");
+const helperFunction = require("./constants");
+const { objJS, objTS } = require("./utils/index.js");
+const { name, version } = require("../package.json");
+const licenses = require("./utils/licenses/licenses.json");
+const fetch = require("cross-fetch");
+const process = require("process");
 
 const cwd = process.cwd();
-const args: string[] = process.argv
-  .slice(2)
-  .map((ele) => ele.toLowerCase().trim());
+const args = process.argv.slice(2).map((ele) => ele.toLowerCase().trim());
 
-const base_name: string = args[1] ?? path.basename(cwd); // node or the one chosen during init
-let selectedLanguage: string = "typescript";
-const currentVersion: string = version;
+const base_name = args[1] ?? path.basename(cwd); // node or the one chosen during init
+let selectedLanguage = "typescript";
+const currentVersion = version;
 
 // interface
 
-const prompt = async (): Promise<void> => {
+const prompt = async () => {
   await helperFunction.prompt(name, currentVersion, __dirname);
 };
 // unknown command
-const help = async (): Promise<void> => {
+const help = async () => {
   await helperFunction.promptHelp(name, currentVersion, __dirname);
 };
 
@@ -34,7 +32,7 @@ const main = async () => {
   await helperFunction.prompt(name, currentVersion, __dirname);
   const baseDir = "src";
   let fileName = "";
-  let packageObject: typeof objJS | typeof objTS;
+  let packageObject;
   let { packageName } = await inquirer.prompt([
     {
       default: base_name,
@@ -138,14 +136,14 @@ const main = async () => {
   ]);
 
   const chosenLicense = licenses.find((l) => l.spdx_id === license);
-  let res = await fetch(chosenLicense?.url as any);
+  let res = await fetch(chosenLicense?.url);
   const licenseData = await res.json();
   packageObject.license = license;
 
   if (!fs.existsSync(path.resolve(cwd, baseDir))) {
     await helperFunction.createFolders(path.resolve(cwd, baseDir));
   }
-  let routesFolder: string = "src/routes";
+  let routesFolder = "src/routes";
   if (!fs.existsSync(path.resolve(cwd, routesFolder))) {
     await helperFunction.createFolders(path.resolve(cwd, routesFolder));
   }
@@ -173,7 +171,7 @@ const main = async () => {
     fileName.split(".")[1].toLocaleLowerCase() === "ts" ? tsCode : jsCode
   );
 
-  const routesFile: string =
+  const routesFile =
     fileName.split(".")[1].toLocaleLowerCase() === "ts"
       ? "index.ts"
       : "index.js";
