@@ -34,12 +34,6 @@ const help = async () => {
   await helperFunction.promptHelp(name, currentVersion, __dirname);
 };
 
-helperFunction.creatingFilesPrompt(
-  "index.ts",
-  [".gitignore", "readme.md", "License"],
-  "electron"
-);
-
 // main initializer
 const main = async () => {
   await helperFunction.prompt(name, currentVersion, __dirname);
@@ -56,6 +50,7 @@ const main = async () => {
       default: "express",
     },
   ]);
+
   let { packageName } = await inquirer.prompt([
     {
       default: base_name,
@@ -273,7 +268,7 @@ const main = async () => {
     "utf8"
   );
 
-  helperFunction.creatingFilesPrompt(fileName, files);
+  helperFunction.creatingFilesPrompt(fileName, files, boilerPlate);
 
   const routesFile =
     fileName.split(".")[1].toLocaleLowerCase() === "ts"
