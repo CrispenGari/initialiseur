@@ -1,0 +1,19 @@
+import KoaRouter from "koa-router";
+
+const router = new Router({
+  prefix: "/api/hello",
+});
+
+router.get("/", (ctx, next) => {
+  ctx.body = {
+    name: "backend",
+    language: "typescript",
+    message: "hello world!",
+    programmer: "@programer",
+    moto: "i'm a programer i have no life!",
+    framework: "koa.js",
+  };
+  next();
+});
+
+export default router;

@@ -1,20 +1,27 @@
 {
-  "name": "initialiseur",
-  "version": "5.0.0",
+  "name": "@crispengari/node-backend",
+  "version": "1.2.7",
   "main": "src index.js",
-  "author": "@crispengari",
+  "author": "",
   "license": "MIT",
   "bin": "src/index.js",
   "description": "THIS IS A BOILER PLATE THAT INITIALIZE A NODE EXPRESS BACKEND FOR TYPESCRIPT AND JAVASCRIPT",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "start:fast": "tsnd --respawn src/index.ts",
+    "watch": "tsc -w"
   },
   "dependencies": {
     "chalk": "^4.1.2",
     "cors": "^2.8.5",
-    "cross-fetch": "^3.1.5",
-    "dotenv": "^16.0.1",
-    "inquirer": "7.3.3"
+    "express": "^4.17.1",
+    "inquirer": "^8.1.2",
+    "dotenv": "^10.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12",
+    "ts-node-dev": "^2.0.0"
   },
   "bugs": {
     "url": "https://github.com/CrispenGari/initialiseur/issues"
@@ -28,7 +35,6 @@
     "nodejs-backend",
     "javascript",
     "js",
-    "express",
-    "backend"
+    "express"
   ]
 }

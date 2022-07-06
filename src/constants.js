@@ -54,7 +54,7 @@ const promptHelp = async (name, version, __dirname) => {
   sep();
   console.log(
     chalk.green(" init <package name>"),
-    chalk.gray(" for initializing a new backend server.")
+    chalk.gray(" for initializing of a new node (express, koa, electron) app.")
   );
   console.log(
     chalk.green(" -h"),
@@ -71,19 +71,41 @@ const promptHelp = async (name, version, __dirname) => {
   sep();
   sep();
 };
-const creatingFilesPrompt = (fileName, files) => {
+const creatingFilesPrompt = (fileName, files, boilerPlate) => {
   files.push("package.json");
   if (fileName.split(".")[1] === "ts") {
     files.push("tsconfig.json");
   }
   sep();
-  console.log(chalk.green("Generating Basic Files"));
-  console.log(`  - ${chalk.bgBlue(" src ")}`);
-  console.log(`     - ${chalk.bgGreen(" routes ")}`);
-  console.log(`       - ${chalk.blue(`index.${fileName.split(".")[1]} `)}`);
-  console.log(`     - ${chalk.blue(fileName)}`);
+  console.log(chalk.green("Generating Basic Files(🌼) and Folders(📁)"));
+
+  if (boilerPlate === "express") {
+    console.log(`  📁 ${chalk.bgBlue(" src ")}`);
+    console.log(`     📁 ${chalk.bgGreen(" routes ")}`);
+    console.log(`       🌼 ${chalk.blue(`index.${fileName.split(".")[1]} `)}`);
+    console.log(`     🌼 ${chalk.blue(fileName)}`);
+  } else if (boilerPlate === "koa") {
+    console.log(`  📁 ${chalk.bgBlue(" src ")}`);
+    console.log(`     📁 ${chalk.bgGreen(" routes ")}`);
+    console.log(`        📁 ${chalk.bgGreen(" hello ")}`);
+    console.log(
+      `           🌼 ${chalk.blue(`index.${fileName.split(".")[1]} `)}`
+    );
+    console.log(`     🌼 ${chalk.blue(fileName)}`);
+  } else if (boilerPlate === "electron") {
+    console.log(`  📁 ${chalk.bgBlue(" src ")}`);
+    console.log(`     📁 ${chalk.bgGreen(" public ")}`);
+    console.log(`        🌼 ${chalk.blue("index.html")}`);
+    console.log(`     📁 ${chalk.bgGreen(" scripts ")}`);
+    console.log(`        🌼 ${chalk.blue("index.js")}`);
+    console.log(`        🌼 ${chalk.blue("preload.js")}`);
+    console.log(`     📁 ${chalk.bgGreen(" styles ")}`);
+    console.log(`        🌼 ${chalk.blue("index.css")}`);
+    console.log(`     🌼 ${chalk.blue(fileName)}`);
+  }
+
   for (let i = 0; i < files.length; i++) {
-    console.log(`  - ${chalk.blue(files[i])}`);
+    console.log(`  🌼 ${chalk.blue(files[i])}`);
   }
   sep();
 };

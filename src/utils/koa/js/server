@@ -1,0 +1,16 @@
+require("dotenv/config");
+const Koa = require("koa");
+const koaBody = require("koa-body");
+const hello = require("./routes/hello/index.js");
+
+//
+const app = new Koa();
+const PORT = 3001 || process.env.PORT;
+
+// ------
+
+// middlewares
+app.use(koaBody());
+app.use(hello.routes());
+
+app.listen(PORT, () => console.log("The server is running on port: %s", PORT));

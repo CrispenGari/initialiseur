@@ -5,6 +5,13 @@ const { writeFile, readFile } = require("fs/promises");
 const fs = require("fs");
 const helperFunction = require("./constants");
 const { objJS, objTS } = require("./utils/index.js");
+
+const {
+  getScriptObject,
+  getEntryPoint,
+  getDependencies,
+  getDevDependencies,
+} = require("./helper/index.js");
 const { name, version } = require("../package.json");
 const licenses = require("./utils/licenses/licenses.json");
 const fetch = require("cross-fetch");
@@ -27,57 +34,78 @@ const help = async () => {
   await helperFunction.promptHelp(name, currentVersion, __dirname);
 };
 
+helperFunction.creatingFilesPrompt(
+  "index.ts",
+  [".gitignore", "readme.md", "License"],
+  "electron"
+);
+
 // main initializer
 const main = async () => {
   await helperFunction.prompt(name, currentVersion, __dirname);
   const baseDir = "src";
   let fileName = "";
   let packageObject;
+
+  const { boilerPlate } = await inquirer.prompt([
+    {
+      name: "boilerPlate",
+      type: "list",
+      choices: ["koa", "express", "electron"],
+      message: "which boiler plate application do you want to initialize?",
+      default: "express",
+    },
+  ]);
   let { packageName } = await inquirer.prompt([
     {
       default: base_name,
       name: "packageName",
-      message: "backend/package name:",
+      message: "boiler plate name:",
       type: "input",
     },
   ]);
 
   const { language } = await inquirer.prompt([
     {
-      choices: ["javascript", "typescript"],
+      choices:
+        boilerPlate === "electron"
+          ? ["javascript"]
+          : ["javascript", "typescript"],
       type: "list",
-      default: "typescript",
+      default: boilerPlate === "electron" ? "javascript" : "typescript",
       name: "language",
-      message: "which language do you want to use for your backend app?",
+      message: `which language do you want to use for your (${boilerPlate}) boiler plate app?`,
     },
   ]);
   packageObject = language === "javascript" ? objJS : objTS;
   selectedLanguage = language;
   packageObject.name = packageName;
+  packageObject.scripts = getScriptObject(boilerPlate, language);
 
   const { version } = await inquirer.prompt([
     {
       default: "1.0.0",
       name: "version",
-      message: "backend/package version:",
+      message: "boiler plate version:",
     },
   ]);
   packageObject.version = version;
   const { description } = await inquirer.prompt([
     {
       name: "description",
-      message: "backend/package description:",
+      message: "boiler plate description:",
     },
   ]);
+
   packageObject.description = description;
   const { entryPoint } = await inquirer.prompt([
     {
-      default: language === "javascript" ? "server.js" : "server.ts",
-
+      default: getEntryPoint(boilerPlate, language),
       name: "entryPoint",
-      message: "backend/package entry point:",
+      message: "boiler plate entry point:",
     },
   ]);
+
   if (entryPoint.split(".").length > 1) {
     if (
       entryPoint.split(".")[1] === "js" ||
@@ -93,24 +121,17 @@ const main = async () => {
       language === "javascript" ? `${entryPoint}.js` : `${entryPoint}.ts`;
   }
   packageObject.main = fileName;
-  if (fileName.split(".")[1] === "js") {
-    packageObject.scripts.start = `node src/${fileName}`;
-    packageObject.scripts.dev = `nodemon src/${fileName}`;
-  } else {
-    packageObject.scripts.start = `ts-node src/${fileName}`;
-    packageObject.scripts.dev = `nodemon src/${fileName}`;
-  }
   const { keywords } = await inquirer.prompt([
     {
       name: "keywords",
-      message: "backend/package keywords:",
+      message: "boiler plate keywords:",
     },
   ]);
   packageObject.keywords = keywords?.split(" ");
   const { author } = await inquirer.prompt([
     {
       name: "author",
-      message: "backend/package author:",
+      message: "boiler plate author:",
     },
   ]);
   packageObject.author = author;
@@ -118,7 +139,7 @@ const main = async () => {
     {
       name: "license",
       default: "MIT",
-      message: "backend/package license:",
+      message: "boiler plate license:",
       type: "list",
       choices: licenses.map((l) => l.spdx_id),
     },
@@ -129,11 +150,13 @@ const main = async () => {
       name: "files",
       type: "checkbox",
       choices: [".gitignore", "README.md", "LICENSE", ".env"],
-      message:
-        "which additional files do you want to add for your backend app?",
+      message: `which additional files do you want to add for your (${boilerPlate}) boiler plate app?`,
       default: [".gitignore", ".env"],
     },
   ]);
+
+  packageObject.dependencies = getDependencies(boilerPlate, language);
+  packageObject.devDependencies = getDevDependencies(boilerPlate, language);
 
   const chosenLicense = licenses.find((l) => l.spdx_id === license);
   let res = await fetch(chosenLicense?.url);
@@ -143,52 +166,153 @@ const main = async () => {
   if (!fs.existsSync(path.resolve(cwd, baseDir))) {
     await helperFunction.createFolders(path.resolve(cwd, baseDir));
   }
-  let routesFolder = "src/routes";
-  if (!fs.existsSync(path.resolve(cwd, routesFolder))) {
-    await helperFunction.createFolders(path.resolve(cwd, routesFolder));
+
+  let routesFolder =
+    boilerPlate === "express"
+      ? "src/routes"
+      : boilerPlate === "koa"
+      ? "src/routes/hello"
+      : null;
+
+  if (routesFolder !== null) {
+    if (!fs.existsSync(path.resolve(cwd, routesFolder))) {
+      await helperFunction.createFolders(path.resolve(cwd, routesFolder));
+    }
+  }
+  //************ CREATING FOLDERS and Files FOR ELECTRON APP****************** */
+  if (boilerPlate === "electron") {
+    const htmlElectronCode = await readFile(
+      path.resolve(path.join(__dirname, "utils/electron/files/index.html")),
+      "utf8"
+    );
+
+    const rendererElectronCode = await readFile(
+      path.resolve(path.join(__dirname, "utils/electron/files/index.js")),
+      "utf8"
+    );
+
+    const mainElectronCode = await readFile(
+      path.resolve(path.join(__dirname, "utils/electron/js/main")),
+      "utf8"
+    );
+    const preloadElectronCode = await readFile(
+      path.resolve(path.join(__dirname, "utils/electron/files/preload.js")),
+      "utf8"
+    );
+
+    const cssElectronCode = await readFile(
+      path.resolve(path.join(__dirname, "utils/electron/files/index.css")),
+      "utf8"
+    );
+
+    if (!fs.existsSync(path.resolve(cwd, "public"))) {
+      await helperFunction.createFolders(path.resolve(cwd, "public"));
+    }
+    if (!fs.existsSync(path.resolve(cwd, "styles"))) {
+      await helperFunction.createFolders(path.resolve(cwd, "styles"));
+    }
+    if (!fs.existsSync(path.resolve(cwd, "scripts"))) {
+      await helperFunction.createFolders(path.resolve(cwd, "scripts"));
+    }
+
+    await writeFile(
+      path.resolve(path.resolve(cwd, `${baseDir}/scripts/preload.js`)),
+      preloadElectronCode
+    );
+    await writeFile(
+      path.resolve(path.resolve(cwd, `${baseDir}/scripts/index.js`)),
+      rendererElectronCode
+    );
+    await writeFile(
+      path.resolve(path.resolve(cwd, `${baseDir}/styles/index.css`)),
+      cssElectronCode
+    );
+    await writeFile(
+      path.resolve(path.resolve(cwd, `${baseDir}/public/index.html`)),
+      htmlElectronCode
+    );
+    await writeFile(
+      path.resolve(path.resolve(cwd, `${baseDir}/main.js`)),
+      mainElectronCode
+    );
   }
 
-  const jsCode = await readFile(
-    path.resolve(path.join(__dirname, "utils/js/server")),
+  //************************ Done Creating Folders for an electron app. */
+  const jsCodeKoa = await readFile(
+    path.resolve(path.join(__dirname, "utils/koa/js/server")),
     "utf8"
   );
-  const tsCode = await readFile(
-    path.resolve(path.join(__dirname, "utils/ts/server")),
+  const tsCodeKoa = await readFile(
+    path.resolve(path.join(__dirname, "utils/koa/ts/server")),
     "utf8"
   );
-  const jsCodeRouter = await readFile(
-    path.resolve(path.join(__dirname, "utils/js/router")),
+  const jsCodeExpress = await readFile(
+    path.resolve(path.join(__dirname, "utils/express/js/server")),
     "utf8"
   );
-  const tsCodeRouter = await readFile(
-    path.resolve(path.join(__dirname, "utils/ts/router")),
+  const tsCodeExpress = await readFile(
+    path.resolve(path.join(__dirname, "utils/express/ts/server")),
+    "utf8"
+  );
+
+  const jsCodeRouterKoa = await readFile(
+    path.resolve(path.join(__dirname, "utils/koa/js/router")),
+    "utf8"
+  );
+  const tsCodeRouterKoa = await readFile(
+    path.resolve(path.join(__dirname, "utils/koa/ts/router")),
+    "utf8"
+  );
+
+  const jsCodeRouterExpress = await readFile(
+    path.resolve(path.join(__dirname, "utils/express/js/router")),
+    "utf8"
+  );
+  const tsCodeRouterExpress = await readFile(
+    path.resolve(path.join(__dirname, "utils/express/ts/router")),
     "utf8"
   );
 
   helperFunction.creatingFilesPrompt(fileName, files);
-  await writeFile(
-    path.resolve(path.resolve(cwd, `${baseDir}/${fileName}`)),
-    fileName.split(".")[1].toLocaleLowerCase() === "ts" ? tsCode : jsCode
-  );
 
   const routesFile =
     fileName.split(".")[1].toLocaleLowerCase() === "ts"
       ? "index.ts"
       : "index.js";
-  await writeFile(
-    path.resolve(path.resolve(cwd, `${routesFolder}/${routesFile}`)),
-    fileName.split(".")[1].toLocaleLowerCase() === "ts"
-      ? tsCodeRouter
-      : jsCodeRouter
-  );
+  if (boilerPlate === "express") {
+    await writeFile(
+      path.resolve(path.resolve(cwd, `${baseDir}/${fileName}`)),
+      fileName.split(".")[1].toLocaleLowerCase() === "ts"
+        ? tsCodeExpress
+        : jsCodeExpress
+    );
+    await writeFile(
+      path.resolve(path.resolve(cwd, `${routesFolder}/${routesFile}`)),
+      fileName.split(".")[1].toLocaleLowerCase() === "ts"
+        ? tsCodeRouterExpress
+        : jsCodeRouterExpress
+    );
+  } else if (boilerPlate === "koa") {
+    await writeFile(
+      path.resolve(path.resolve(cwd, `${baseDir}/${fileName}`)),
+      fileName.split(".")[1].toLocaleLowerCase() === "ts"
+        ? tsCodeKoa
+        : jsCodeKoa
+    );
+    await writeFile(
+      path.resolve(path.resolve(cwd, `${routesFolder}/${routesFile}`)),
+      fileName.split(".")[1].toLocaleLowerCase() === "ts"
+        ? tsCodeRouterKoa
+        : jsCodeRouterKoa
+    );
+  }
+
   await writeFile(
     path.resolve(cwd, "package.json"),
     JSON.stringify(packageObject, null, 2)
   );
-  const readMePath = path.resolve(path.join(__dirname, "utils/readme.md"));
-  const gitIgnorePath = path.resolve(
-    path.join(__dirname, "utils/gitignore.txt")
-  );
+  const readMePath = path.resolve(path.join(__dirname, "files/readme.md"));
+  const gitIgnorePath = path.resolve(path.join(__dirname, "files/.gitignore"));
   const readMe = await readFile(readMePath, "utf8");
   const gitIgnore = await readFile(gitIgnorePath, "utf8");
   files.indexOf(".gitignore") !== -1 &&
@@ -202,10 +326,11 @@ const main = async () => {
     (await writeFile(path.resolve(cwd, "README.md"), readMe));
   files.indexOf("LICENSE") !== -1 &&
     (await writeFile(path.resolve(cwd, "LICENSE"), licenseData?.body));
+
   let config = "";
   if (fileName.split(".")[1].toLocaleLowerCase() === "ts") {
     const tsconfigPath = path.resolve(
-      path.join(__dirname, "configs/tsconfig.json")
+      path.join(__dirname, `utils/${boilerPlate}/configs/tsconfig.json`)
     );
     config = await readFile(tsconfigPath, "utf8");
     await writeFile(
