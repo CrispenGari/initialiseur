@@ -202,14 +202,14 @@ const main = async () => {
       "utf8"
     );
 
-    if (!fs.existsSync(path.resolve(cwd, "public"))) {
-      await helperFunction.createFolders(path.resolve(cwd, "public"));
+    if (!fs.existsSync(path.resolve(cwd, "src/public"))) {
+      await helperFunction.createFolders(path.resolve(cwd, "src/public"));
     }
     if (!fs.existsSync(path.resolve(cwd, "styles"))) {
-      await helperFunction.createFolders(path.resolve(cwd, "styles"));
+      await helperFunction.createFolders(path.resolve(cwd, "src/styles"));
     }
     if (!fs.existsSync(path.resolve(cwd, "scripts"))) {
-      await helperFunction.createFolders(path.resolve(cwd, "scripts"));
+      await helperFunction.createFolders(path.resolve(cwd, "src/scripts"));
     }
 
     await writeFile(

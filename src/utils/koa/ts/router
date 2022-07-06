@@ -1,10 +1,10 @@
 import KoaRouter from "koa-router";
 
-const router = new Router({
+const router = new KoaRouter({
   prefix: "/api/hello",
 });
 
-router.get("/", (ctx, next) => {
+router.get("/", (ctx: any, next: any) => {
   ctx.body = {
     name: "backend",
     language: "typescript",

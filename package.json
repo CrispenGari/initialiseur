@@ -1,11 +1,11 @@
 {
   "name": "initialiseur",
-  "version": "5.0.3",
+  "version": "5.0.4",
   "main": "src index.js",
   "author": "@crispengari",
   "license": "MIT",
   "bin": "src/index.js",
-  "description": "THIS IS A BOILER PLATE THAT INITIALIZE A NODE EXPRESS BACKEND FOR TYPESCRIPT AND JAVASCRIPT",
+  "description": "THIS IS A BOILER PLATE CODE INITIALIZER FOR NODE.JS APPLICATIONS (express, koa, electron).",
   "scripts": {
     "start": "node src/index.js"
   },

@@ -1,9 +1,50 @@
-## initialiseur.
+## initialiseur
 
-This is a package that can be installed on your computer to easily initialize `node.js` backend server/application. This backend server is an `express` application with `cors` configured that is ready to run on a configured default port `3001` which can be modified in code. This package can initialize boiler plate code for a basic express application for the following languages:
+This is a package that can be installed on your computer to easily initialize `node.js`node applications boiler plates such as:
+
+```shell
+- express
+- koa
+- electron
+```
+
+### Express Application
+
+This backend server is an `express` application with `cors` configured that is ready to run on a configured default port `3001` which can be modified in code. This package can initialize boiler plate code for a basic express application for the following languages:
 
 1. javascript
 2. typescript `(default)`
+
+Generated files for an `express` boiler plate:
+
+```shell
+
+```
+
+### Koa Application
+
+This backend server is an `koa` that is ready to run on a configured default port `3001` which can be modified in code. This package can initialize boiler plate code for a basic express application for the following languages:
+
+1. javascript
+2. typescript `(default)`
+
+Generated files for an `koa` boiler plate:
+
+```shell
+
+```
+
+### Electron
+
+This is skeleton electron application that is ready and running. All you have to do it to change the code according to what you want your application to do. The current version `5.0.*` is currently having one language initialization for an electron application which is:
+
+1. `javascript`
+
+Generated files for an `electron` boiler plate:
+
+```shell
+
+```
 
 > Note that this package is coming from `@crispengari/node-backend`.
 
@@ -25,34 +66,19 @@ yarn global add initialiseur
 
 ### Usage
 
-To initialize a new `node.js` backend project you run the following command:
+To initialize a new `node` boiler plate application you run the following command:
 
 ```
-initialiseur init <package|backend name>
+initialiseur init <name>
 ```
 
 > Note that you can initialize the `node.js` backend project without installing `initialiseur` globally by the use of `npx`:
 
 ```shell
-npx initialiseur init <package|backend name>
+npx initialiseur init <name>
 ```
 
-- `<package|backend name>` is optional if note specified `initialiseur` will use the `root` directory of the project as the default package name, which can be altered as well.
-
-### Generated folders and files.
-
-```
-- 📁 parent folder
-    - 📁 src
-        - 📁 routes
-            - index.[j|s]
-        - server.[j|s]
-    - 🗄 .gitignore
-    - 🗄 README.md
-    - 🗄 package.json
-    - 🗄 LISENSE (MIT)
-    - 🗄 tsconfig.json (if typescript is selected as a language)
-```
+- `<name>` is optional if note specified `initialiseur` will use the `root` directory of the project as the default package name, which can be altered as well.
 
 ### Available commands in `initialiseur`
 
@@ -81,26 +107,22 @@ This initializes a new `initialiseur` project:
 
 ```shell
 
-initialiseur init <package|backend name>
+initialiseur init <name>
 # Or
 initialiseur init
 ```
 
-### Staring the server.
+### Starting the apps.
 
-**Note:** Starting the server is different if you are using typescript or javascript.
+**Note:** Starting the server is different if you are using `typescript` or `javascript` and if you are using `electron`, `koa` or `express`.
 
 1. With `JavaScript`:
 
-```
-yarn|npm dev
-```
-
-**Note**- You can also use the following command to start the server but with no hot reloading:
-
-```
+```shell
 yarn|npm start
 ```
+
+> The above command start a application for both `electron`, `koa` and `express`. The `electron` application is currently starting with one command which is the `start`.
 
 2. With `TypeScript`:
 
@@ -117,11 +139,7 @@ b) `cmd` 2
 yarn|npm dev
 ```
 
-**Note** You can also use the following command to start the typescript server with an single command:
-
-```
-yarn|npm start
-```
+> The above commands can only be run when you are either running a typescript application for either `koa` or `express`.
 
 ### From `@crispengari/node-backend` to `initialiseur`
 
@@ -163,6 +181,20 @@ npx @crispengari/node-backend@<1.3.2>
 
 - In this version developers are allowed to choose licenses templates from the available ones during backend initialization.
 - Developers can also select which additional optional files they want to add in their project during initialization.
+
+### What is new in `initialiseur@5.*.*`?
+
+- In this version developers are now able to select the application they want to initialize between:
+  - express application
+  - electron application
+  - koa application
+- Developers still have choice to choose the programming language to be used among:
+  - javascript
+  - typescript
+
+* The language choices are currently working for the following applcations:
+  - koa application
+  - express application
 
 ### Why `initialiseur`?
 
