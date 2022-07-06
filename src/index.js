@@ -312,7 +312,9 @@ const main = async () => {
     JSON.stringify(packageObject, null, 2)
   );
   const readMePath = path.resolve(path.join(__dirname, "files/readme.md"));
-  const gitIgnorePath = path.resolve(path.join(__dirname, "files/.gitignore"));
+  const gitIgnorePath = path.resolve(
+    path.join(__dirname, "files/gitignore.txt")
+  );
   const readMe = await readFile(readMePath, "utf8");
   const gitIgnore = await readFile(gitIgnorePath, "utf8");
   files.indexOf(".gitignore") !== -1 &&
