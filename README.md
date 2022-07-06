@@ -8,6 +8,8 @@ This is a package that can be installed on your computer to easily initialize `n
 - electron
 ```
 
+<img src="/images/cover.jpg" alt="cover" width="100%"/>
+
 ### Express Application
 
 This backend server is an `express` application with `cors` configured that is ready to run on a configured default port `3001` which can be modified in code. This package can initialize boiler plate code for a basic express application for the following languages:
@@ -19,6 +21,15 @@ Generated files for an `express` boiler plate:
 
 ```shell
 
+Generating Basic Files(🌼) and Folders(📁)
+  📁  src
+     📁  routes
+       🌼 index.ts
+     🌼 server.ts
+  🌼 .gitignore
+  🌼 .env
+  🌼 package.json
+  🌼 tsconfig.json
 ```
 
 ### Koa Application
@@ -31,7 +42,16 @@ This backend server is an `koa` that is ready to run on a configured default por
 Generated files for an `koa` boiler plate:
 
 ```shell
-
+Generating Basic Files(🌼) and Folders(📁)
+  📁  src
+     📁  routes
+        📁  hello
+           🌼 index.ts
+     🌼 server.ts
+  🌼 .gitignore
+  🌼 .env
+  🌼 package.json
+  🌼 tsconfig.json
 ```
 
 ### Electron
@@ -43,7 +63,21 @@ This is skeleton electron application that is ready and running. All you have to
 Generated files for an `electron` boiler plate:
 
 ```shell
-
+Generating Basic Files(🌼) and Folders(📁)
+  📁  src
+     📁  public
+        🌼 index.html
+     📁  scripts
+        🌼 index.js
+        🌼 preload.js
+     📁  styles
+        🌼 index.css
+     🌼 main.js
+  🌼 .gitignore
+  🌼 README.md
+  🌼 LICENSE
+  🌼 .env
+  🌼 package.json
 ```
 
 > Note that this package is coming from `@crispengari/node-backend`.
