@@ -22,6 +22,7 @@ const args = process.argv.slice(2).map((ele) => ele.toLowerCase().trim());
 
 const base_name = args[1] ?? path.basename(cwd); // node or the one chosen during init
 let selectedLanguage = "typescript";
+let selectedBoilerPlate = "express";
 const currentVersion = version;
 
 // interface
@@ -74,6 +75,7 @@ const main = async () => {
   ]);
   packageObject = language === "javascript" ? objJS : objTS;
   selectedLanguage = language;
+  selectedBoilerPlate = boilerPlate;
   packageObject.name = packageName;
   packageObject.scripts = getScriptObject(boilerPlate, language);
 
@@ -181,17 +183,17 @@ const main = async () => {
       "utf8"
     );
 
-    const rendererElectronCode = await readFile(
-      path.resolve(path.join(__dirname, "utils/electron/files/index.js")),
-      "utf8"
-    );
-
     const mainElectronCode = await readFile(
       path.resolve(path.join(__dirname, "utils/electron/js/main")),
       "utf8"
     );
     const preloadElectronCode = await readFile(
-      path.resolve(path.join(__dirname, "utils/electron/files/preload.js")),
+      path.resolve(path.join(__dirname, "utils/electron/files/preload")),
+      "utf8"
+    );
+
+    const rendererElectronCode = await readFile(
+      path.resolve(path.join(__dirname, "utils/electron/files/index")),
       "utf8"
     );
 
@@ -359,7 +361,11 @@ if (args.length === 0) {
         },
       ]);
       await helperFunction.installPackages(packageManager);
-      await helperFunction.displayMessage(packageManager, selectedLanguage);
+      await helperFunction.displayMessage(
+        packageManager,
+        selectedLanguage,
+        selectedBoilerPlate
+      );
     });
 } else {
   prompt();

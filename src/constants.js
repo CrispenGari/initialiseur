@@ -110,77 +110,83 @@ const creatingFilesPrompt = (fileName, files, boilerPlate) => {
   sep();
 };
 
-const message = (packageManager, language) => {
+const message = (packageManager, language, boilerPlate) => {
   sep();
   console.log(chalk.bgGreen("-- all done!! "));
 
-  if (language === "javascript") {
+  if (boilerPlate === "electron") {
     sep();
     console.log(chalk.bgBlue(` available commands in ${language} `));
     sep();
     console.log(
-      chalk.green(
+      chalk.white(
         ` ${
           packageManager === "yarn"
             ? chalk.bgBlue(packageManager)
             : chalk.bgRed(packageManager)
         } start `
-      )
-    );
-    console.log(
-      chalk.green(
-        ` ${
-          packageManager === "yarn"
-            ? chalk.bgBlue(packageManager)
-            : chalk.bgRed(packageManager)
-        } dev `
       )
     );
   } else {
-    sep();
-    console.log(chalk.bgBlue(` available commands in ${language} `));
-    sep();
-    console.log(
-      chalk.white(
-        ` ${
-          packageManager === "yarn"
-            ? chalk.bgBlue(packageManager)
-            : chalk.bgRed(packageManager)
-        } start `
-      )
-    );
-    console.log(
-      chalk.white(
-        ` ${
-          packageManager === "yarn"
-            ? chalk.bgBlue(packageManager)
-            : chalk.bgRed(packageManager)
-        } dev `
-      )
-    );
-    console.log(
-      chalk.white(
-        ` ${
-          packageManager === "yarn"
-            ? chalk.bgBlue(packageManager)
-            : chalk.bgRed(packageManager)
-        } watch `
-      )
-    );
-    console.log(
-      chalk.white(
-        ` ${
-          packageManager === "yarn"
-            ? chalk.bgBlue(packageManager)
-            : chalk.bgRed(packageManager)
-        } start:fast `
-      )
-    );
+    if (language === "javascript") {
+      sep();
+      console.log(chalk.bgBlue(` available commands in ${language} `));
+      sep();
+      console.log(
+        chalk.green(
+          ` ${
+            packageManager === "yarn"
+              ? chalk.bgBlue(packageManager)
+              : chalk.bgRed(packageManager)
+          } start `
+        )
+      );
+      console.log(
+        chalk.green(
+          ` ${
+            packageManager === "yarn"
+              ? chalk.bgBlue(packageManager)
+              : chalk.bgRed(packageManager)
+          } dev `
+        )
+      );
+    } else {
+      sep();
+      console.log(chalk.bgBlue(` available commands in ${language} `));
+      sep();
+      console.log(
+        chalk.white(
+          ` ${
+            packageManager === "yarn"
+              ? chalk.bgBlue(packageManager)
+              : chalk.bgRed(packageManager)
+          } start `
+        )
+      );
+      console.log(
+        chalk.white(
+          ` ${
+            packageManager === "yarn"
+              ? chalk.bgBlue(packageManager)
+              : chalk.bgRed(packageManager)
+          } dev `
+        )
+      );
+      console.log(
+        chalk.white(
+          ` ${
+            packageManager === "yarn"
+              ? chalk.bgBlue(packageManager)
+              : chalk.bgRed(packageManager)
+          } watch `
+        )
+      );
+    }
   }
 };
 
 const createFolders = async (pathName) => {
-  await mkdir(path.resolve(__dirname, pathName));
+  await mkdir(path.resolve(__dirname, pathName), { recursive: true });
 };
 
 const installPackages = async (packageManager) => {
@@ -195,8 +201,12 @@ const installPackages = async (packageManager) => {
   }
 };
 
-const displayMessage = async (packageManager, selectedLanguage) => {
-  message(packageManager, selectedLanguage);
+const displayMessage = async (
+  packageManager,
+  selectedLanguage,
+  boilerPlate
+) => {
+  message(packageManager, selectedLanguage, boilerPlate);
 };
 const helperFunction = {
   prompt,
