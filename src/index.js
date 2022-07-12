@@ -24,6 +24,7 @@ const base_name = args[1] ?? path.basename(cwd); // node or the one chosen durin
 let selectedLanguage = "typescript";
 let selectedBoilerPlate = "express";
 const currentVersion = version;
+let selectedPackageName = base_name;
 
 // interface
 
@@ -60,6 +61,7 @@ const main = async () => {
       type: "input",
     },
   ]);
+  selectedPackageName = packageName;
 
   const { language } = await inquirer.prompt([
     {
@@ -360,11 +362,12 @@ if (args.length === 0) {
           message: "which package manager are you using?",
         },
       ]);
-      await helperFunction.installPackages(packageManager);
+
       await helperFunction.displayMessage(
         packageManager,
         selectedLanguage,
-        selectedBoilerPlate
+        selectedBoilerPlate,
+        selectedPackageName
       );
     });
 } else {

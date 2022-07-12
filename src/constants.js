@@ -110,9 +110,13 @@ const creatingFilesPrompt = (fileName, files, boilerPlate) => {
   sep();
 };
 
-const message = (packageManager, language, boilerPlate) => {
+const message = (packageManager, language, boilerPlate, packageName) => {
   sep();
   console.log(chalk.bgGreen("-- all done!! "));
+  sep();
+  console.log(chalk.white(` Then run: `));
+  console.log(` cd ${packageName}`);
+  console.log(packageManager === "yarn" ? ` yarn` : ` npm install`);
 
   if (boilerPlate === "electron") {
     sep();
@@ -122,8 +126,8 @@ const message = (packageManager, language, boilerPlate) => {
       chalk.white(
         ` ${
           packageManager === "yarn"
-            ? chalk.bgBlue(packageManager)
-            : chalk.bgRed(packageManager)
+            ? chalk.bgBlue(` ${packageManager} `)
+            : chalk.bgRed(` ${packageManager} `)
         } start `
       )
     );
@@ -183,30 +187,20 @@ const message = (packageManager, language, boilerPlate) => {
       );
     }
   }
+  sep();
 };
 
 const createFolders = async (pathName) => {
   await mkdir(path.resolve(__dirname, pathName), { recursive: true });
 };
 
-const installPackages = async (packageManager) => {
-  sep();
-  console.log(chalk.blue(`--- installing packages using ${packageManager}...`));
-  if (packageManager === "yarn") {
-    await exec("yarn", (_, __, ___) => {});
-    await exec("yarn upgrade", (_, __, ___) => {});
-  } else {
-    await exec("npm install", (_, __, ___) => {});
-    await exec("npm update", (_, __, ___) => {});
-  }
-};
-
 const displayMessage = async (
   packageManager,
   selectedLanguage,
-  boilerPlate
+  boilerPlate,
+  packageName
 ) => {
-  message(packageManager, selectedLanguage, boilerPlate);
+  message(packageManager, selectedLanguage, boilerPlate, packageName);
 };
 const helperFunction = {
   prompt,
@@ -214,7 +208,6 @@ const helperFunction = {
   sep,
   message,
   creatingFilesPrompt,
-  installPackages,
   displayMessage,
   promptHelp,
 };
