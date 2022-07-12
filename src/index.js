@@ -23,6 +23,7 @@ const args = process.argv.slice(2).map((ele) => ele.toLowerCase().trim());
 const base_name = args[1] ?? path.basename(cwd); // node or the one chosen during init
 let selectedLanguage = "typescript";
 let selectedBoilerPlate = "express";
+let selectedPackageManager = "yarn";
 const currentVersion = version;
 let selectedPackageName = base_name;
 
@@ -79,7 +80,6 @@ const main = async () => {
   selectedLanguage = language;
   selectedBoilerPlate = boilerPlate;
   packageObject.name = packageName;
-  packageObject.scripts = getScriptObject(boilerPlate, language);
 
   const { version } = await inquirer.prompt([
     {
@@ -156,6 +156,23 @@ const main = async () => {
 
   packageObject.dependencies = getDependencies(boilerPlate, language);
   packageObject.devDependencies = getDevDependencies(boilerPlate, language);
+
+  const { packageManager } = await inquirer.prompt([
+    {
+      choices: ["yarn", "npm"],
+      type: "list",
+      default: "yarn",
+      name: "packageManager",
+      message: "which package manager are you using?",
+    },
+  ]);
+
+  selectedPackageManager = packageManager;
+  packageObject.scripts = getScriptObject(
+    boilerPlate,
+    language,
+    packageManager
+  );
 
   const chosenLicense = licenses.find((l) => l.spdx_id === license);
   let res = await fetch(chosenLicense?.url);
@@ -353,18 +370,8 @@ if (args.length === 0) {
   main()
     .catch((error) => console.error(error))
     .then(async () => {
-      const { packageManager } = await inquirer.prompt([
-        {
-          choices: ["yarn", "npm"],
-          type: "list",
-          default: "yarn",
-          name: "packageManager",
-          message: "which package manager are you using?",
-        },
-      ]);
-
       await helperFunction.displayMessage(
-        packageManager,
+        selectedPackageManager,
         selectedLanguage,
         selectedBoilerPlate,
         path.join(cwd.replace(base_name, ""), selectedPackageName)

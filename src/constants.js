@@ -164,7 +164,18 @@ const message = (packageManager, language, boilerPlate, packageName) => {
             packageManager === "yarn"
               ? chalk.bgBlue(packageManager)
               : chalk.bgRed(packageManager)
-          } start `
+          } ${packageManager === "yarn" ? "start" : "run start"}  `
+        )
+      );
+      console.log("----- OR ");
+
+      console.log(
+        chalk.white(
+          ` ${
+            packageManager === "yarn"
+              ? chalk.bgBlue(packageManager)
+              : chalk.bgRed(packageManager)
+          } ${packageManager === "yarn" ? "watch" : "run watch"}  `
         )
       );
       console.log(
@@ -173,20 +184,27 @@ const message = (packageManager, language, boilerPlate, packageName) => {
             packageManager === "yarn"
               ? chalk.bgBlue(packageManager)
               : chalk.bgRed(packageManager)
-          } dev `
+          } ${packageManager === "yarn" ? "dev" : "run dev"}  `
         )
       );
+      console.log("----- OR ");
       console.log(
         chalk.white(
           ` ${
             packageManager === "yarn"
               ? chalk.bgBlue(packageManager)
               : chalk.bgRed(packageManager)
-          } watch `
+          } ${packageManager === "yarn" ? "start:fast" : "run start:fast"}  `
         )
       );
     }
   }
+  sep();
+  console.log(
+    ` ${chalk.bold(chalk.blue("Happy hacking!!!"))} -${chalk.green(
+      "@crispengari"
+    )}`
+  );
   sep();
 };
 

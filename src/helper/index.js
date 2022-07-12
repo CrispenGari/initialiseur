@@ -19,12 +19,18 @@ const {
   expressTsDependencies,
 } = require("../utils/index.js");
 
-const getScriptObject = (boilerPlate, language) => {
+const getScriptObject = (boilerPlate, language, packageManager) => {
   if (language === "javascript") {
     if (boilerPlate === "express") return expressJsScripts;
     if (boilerPlate === "electron") return electronJsScripts;
     if (boilerPlate === "koa") return koaJsScripts;
   } else {
+    if (packageManager === "yarn") {
+      expressTsScripts["start:fast"] = 'concurrently "yarn watch" "yarn dev"';
+    } else {
+      expressTsScripts["start:fast"] =
+        'concurrently "npm run watch" "npm run dev"';
+    }
     if (boilerPlate === "express") return expressTsScripts;
     if (boilerPlate === "electron") return electronTsScripts;
     if (boilerPlate === "koa") return koaTsScripts;

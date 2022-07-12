@@ -23,33 +23,43 @@ initialiseur init <name>
 ### Then
 
 ```shell
+cd <app-name>
+
+# yarn
 yarn start
-# or
-npm start
+
+# npm
+npm run start
 ```
 
-If typescript for hot reloading run the following commands in different terminals or command prompt
-
-1. cmd 1
+If you want to start the server with typescript and hot reloading run the following commands in different terminals or command prompt
 
 ```shell
+# yarn
 yarn watch
 
-# or
-
-npm watch
+# npm
+npm run watch
 ```
 
-2. cmd 2
+b) `cmd` 2
 
 ```shell
+# yarn
 yarn dev
 
-# or
-
-npm dev
+# npm
+npm run dev
 ```
 
-> Note that if you are running an electron application we only have a single command `start` for starting the application with either `npm` or `yarn`.
+Or you can run a single command which was introduced in version `5.1.*` which is:
+
+```shell
+# yarn
+yarn start:fast
+
+# npm
+npm run start:fast
+```
 
 All done **Happy hacking**.

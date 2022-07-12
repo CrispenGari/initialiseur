@@ -153,7 +153,11 @@ initialiseur init
 1. With `JavaScript`:
 
 ```shell
-yarn|npm start
+# yarn
+yarn start
+
+# npm
+npm run start
 ```
 
 > The above command start a application for both `electron`, `koa` and `express`. The `electron` application is currently starting with one command which is the `start`.
@@ -163,14 +167,32 @@ yarn|npm start
 With `ts` you have to open two command the one that will `watch` for file changes and the other one that will run the compiled javascript code:
 a) `cmd` 1
 
-```
-yarn|npm watch
+```shell
+# yarn
+yarn watch
+
+# npm
+npm run watch
 ```
 
 b) `cmd` 2
 
+```shell
+# yarn
+yarn dev
+
+# npm
+npm run dev
 ```
-yarn|npm dev
+
+Or you can run a single command which was introduced in version `5.1.*` which is:
+
+```shell
+# yarn
+yarn start:fast
+
+# npm
+npm run start:fast
 ```
 
 > The above commands can only be run when you are either running a typescript application for either `koa` or `express`.
@@ -233,3 +255,40 @@ npx @crispengari/node-backend@<1.3.2>
 ### Why `initialiseur`?
 
 `initialiseur` is a name that I got from google translation english to french for the name `initializer`. I created this package so that developers can create their backend applications with typescript or javascript without running into a headache of creating files and installing basic packages like `express`.
+
+### Commonly Known Issues.
+
+- The `initialiseur` package has commonly known issue when for starting the `kao` or `express` server for the **first** time with the `start:fast` command for both `npm` and `yarn`. The error is as follows:
+
+```shell
+ Error: Cannot find module './server.js'
+```
+
+> The solution to this is to either open one of your `ts` boiler plate files and save it or you stop the command and run it again.
+
+### License
+
+```
+MIT License
+
+Copyright (c) 2021 Crispen Gari
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+```

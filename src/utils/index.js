@@ -41,6 +41,7 @@ const expressTsScripts = {
   watch: "tsc -w",
   start: "ts-node src/server.ts",
   dev: "nodemon dist/server.js",
+  "start:fast": 'concurrently "yarn watch" "yarn dev"',
 };
 const koaTsScripts = expressTsScripts;
 
@@ -60,6 +61,7 @@ const expressTsDevDependencies = {
   "@types/node": "^16.6.1",
   nodemon: "^2.0.12",
   "@types/node": "^17.0.8",
+  concurrently: "^7.2.2",
 };
 const koaTsDevDependencies = {
   "@types/koa": "^2.13.4",
@@ -70,6 +72,7 @@ const koaTsDevDependencies = {
   typescript: "^4.3.5",
   "@types/cors": "^2.8.12",
   nodemon: "^2.0.12",
+  concurrently: "^7.2.2",
 };
 
 // dependencies for javascript
