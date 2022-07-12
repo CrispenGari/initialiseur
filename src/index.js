@@ -367,7 +367,7 @@ if (args.length === 0) {
         packageManager,
         selectedLanguage,
         selectedBoilerPlate,
-        selectedPackageName
+        path.join(cwd.replace(base_name, ""), selectedPackageName)
       );
     });
 } else {
