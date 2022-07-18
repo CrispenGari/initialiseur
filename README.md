@@ -1,14 +1,18 @@
 ## initialiseur
 
-This is a package that can be installed on your computer to easily initialize `node.js`node applications boiler plates such as:
+This is a package that can be installed on your computer to easily initialize `node.js`node applications boiler plates:
+
+<p align="center">
+<img src="/images/logo.png" alt="logo" width="50%"/>
+</p>
+
+It initializes the following boiler plate code
 
 ```shell
 - express
 - koa
 - electron
 ```
-
-<img src="/images/cover.jpg" alt="cover" width="100%"/>
 
 ### Express Application
 
