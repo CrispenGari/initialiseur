@@ -3,7 +3,8 @@
 This is a package that can be installed on your computer to easily initialize `node.js`node applications boiler plates:
 
 <p align="center">
-<img src="/images/logo.png" alt="logo" width="50%"/>
+
+<img src="https://github.com/CrispenGari/initialiseur/blob/main/images/logo.png" alt="logo" width="50%"/>
 </p>
 
 It initializes the following boiler plate code
